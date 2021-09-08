@@ -1,0 +1,10 @@
+numpy
+pandas
+networkx
+matplotlib
+mapsplotlib
+GPy
+openpyxl
+torch
+pytorch_lightning
+torch-geometric-temporal==0.40

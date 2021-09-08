@@ -1,0 +1,24 @@
+name: GNN
+channels:
+    - conda-forge
+dependencies:
+  - python=3.9
+  - ipykernel
+  - nb_conda_kernels
+  - jupyter
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - tqdm
+  - bs4
+  - setuptools
+  - xlrd
+  - pip
+  - pip:
+      - folium
+      - geopy
+      - pycountry-convert
+      - GPy
+      - mapsplotlib
