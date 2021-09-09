@@ -4,6 +4,7 @@ networkx
 matplotlib
 mapsplotlib
 GPy
+tqdm
 openpyxl
 torch
 pytorch_lightning
