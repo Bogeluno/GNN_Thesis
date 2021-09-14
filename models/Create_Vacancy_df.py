@@ -13,6 +13,9 @@ df["date"] = df["Start tidspunkt"].dt.date
 # All English headers (and fix swap on reservation and start)
 df.columns = ['TripID', 'CarID', 'PersonID', 'Latitude_Start', 'Longitude_Start', 'Latitude_End', 'Longitude_End', 'Start_Time', 'Reservation_Time', 'End_Time', 'Driver_Age', 'Driver_Gender', 'Battery_Start', 'Battery_End', 'KM_driven', 'Zone_Start','Zone_End','Date']
 
+# Delete columns with "-"
+df[df.CarID != "-"]
+
 # Set manual index
 df = df.set_index('TripID')
 
@@ -49,17 +52,21 @@ for i, car in enumerate(df_sorted.CarID.unique()):
     for (_, row1), (_, row2) in zip(car_sub_df[:-1].iterrows(),car_sub_df[1:].iterrows()):
         park_time = row1['End_Time']
         reservation_time = row2['Reservation_Time']
+        start_time = row2['Start_Time']
         time_to_reservation = (row2['Reservation_Time']-row1['End_Time']).total_seconds()/3600
         time_to_start = (row2['Start_Time']-row1['End_Time']).total_seconds()/3600
         park_location_lat = row1['Latitude_End']
         park_location_long = row1['Longitude_End']
         park_zone = row1['Zone_End']
         park_battery = row1['Battery_End']
-        moved = haversine(row1.loc[['Latitude_End','Longitude_End']].values, row2.loc[['Latitude_Start','Longitude_Start']].values) # Moved more than 100m
-        data.append([car, park_time,reservation_time, time_to_reservation, time_to_start, park_location_lat, park_location_long, park_zone, park_battery, moved])
+        moved = haversine(row1.loc[['Latitude_End','Longitude_End']].values, row2.loc[['Latitude_Start','Longitude_Start']].values) 
+        data.append([car, park_time,reservation_time, start_time, time_to_reservation, time_to_start, park_location_lat, park_location_long, park_zone, park_battery, moved])
 
 # Create new df
-df_vacancy = pd.DataFrame(data = data, columns = ['car', 'park_time', 'reservation_time','time_to_reservation', 'time_to_start', 'park_location_lat', 'park_location_long', 'park_zone', 'park_battery', 'moved'])
+df_vacancy = pd.DataFrame(data = data, columns = ['car', 'park_time', 'reservation_time', 'start_time','time_to_reservation', 'time_to_start', 'park_location_lat', 'park_location_long', 'park_zone', 'park_battery', 'moved'])
+
+# Infer types
+df_vacancy = df_vacancy.convert_dtypes()
 
 # Save it
 df_vacancy.to_csv('data/processed/Vacancy.csv')

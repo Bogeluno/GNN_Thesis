@@ -1,5 +1,7 @@
 numpy
 pandas
+geopandas
+folium
 networkx
 matplotlib
 mapsplotlib
@@ -8,4 +10,7 @@ tqdm
 openpyxl
 torch
 pytorch_lightning
+torch-scatter -f https://data.pyg.org/whl/torch-1.9.0+cpu.html
+torch-sparse -f https://data.pyg.org/whl/torch-1.9.0+cpu.html
+torch-geometric
 torch-geometric-temporal==0.40
