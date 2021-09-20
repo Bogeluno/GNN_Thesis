@@ -59,11 +59,12 @@ for i, car in enumerate(df_sorted.CarID.unique()):
         park_location_long = row1['Longitude_End']
         park_zone = row1['Zone_End']
         park_battery = row1['Battery_End']
+        leave_battery = row2['Battery_Start']
         moved = haversine(row1.loc[['Latitude_End','Longitude_End']].values, row2.loc[['Latitude_Start','Longitude_Start']].values) 
-        data.append([car, park_time,reservation_time, start_time, time_to_reservation, time_to_start, park_location_lat, park_location_long, park_zone, park_battery, moved])
+        data.append([car, park_time,reservation_time, start_time, time_to_reservation, time_to_start, park_location_lat, park_location_long, park_zone, park_battery, leave_battery, moved])
 
 # Create new df
-df_vacancy = pd.DataFrame(data = data, columns = ['car', 'park_time', 'reservation_time', 'start_time','time_to_reservation', 'time_to_start', 'park_location_lat', 'park_location_long', 'park_zone', 'park_battery', 'moved'])
+df_vacancy = pd.DataFrame(data = data, columns = ['car', 'park_time', 'reservation_time', 'start_time','time_to_reservation', 'time_to_start', 'park_location_lat', 'park_location_long', 'park_zone', 'park_battery', 'leave_battery', 'moved'])
 
 # Infer types
 df_vacancy = df_vacancy.convert_dtypes()

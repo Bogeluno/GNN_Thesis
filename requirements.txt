@@ -1,6 +1,7 @@
 numpy
 pandas
 geopandas
+rtree
 folium
 networkx
 matplotlib
