@@ -9,6 +9,7 @@ mapsplotlib
 GPy
 tqdm
 openpyxl
+osmnx
 torch
 pytorch_lightning
 torch-scatter -f https://data.pyg.org/whl/torch-1.9.0+cpu.html
