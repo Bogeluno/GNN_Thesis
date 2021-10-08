@@ -26,7 +26,8 @@ def haversine(point1, point2):
     r = 6371000 # Radius of earth in m
     return c * r
 
-t time.time()
+t = time.time()
+print('Loading data')
 # Load data
 files = glob.glob("data/raw/SNData/*.csv")
 
@@ -160,14 +161,14 @@ def merge_NC(dataframe):
 
 # Merge new datasets
 dfs = []
-for sub_df in tqdm.tqdm(CarID_dict.values()):
+for sub_df in CarID_dict.values():
     dfs.append(merge_NC(sub_df))
 
 df = pd.concat(dfs,ignore_index=False).sort_values(by = 'Reservation_Time')
 
 print('Fixing overlapping times...')
 
-#
+# Overlapping trips
 CarID_dict = dict(iter(df.groupby('CarID')))
 tat = []
 endtat0 = []
@@ -176,7 +177,7 @@ endtat2 = []
 endtat3 = []
 
 # Generate dataset with rows to be fixed
-# for car,dataf in CarID_dict.items():
+for car,dataf in CarID_dict.items():
     dataf = dataf.sort_values(by = 'Reservation_Time')
     tap = list( zip( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]].Customer_Group.values, dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]+1].Customer_Group.values ) )
     tat.extend( tap )
@@ -283,7 +284,7 @@ df1819.loc[1423849,'Fuel_End'], df1819.loc[1424064,'Fuel_Start'] = 92,92
 
 # Fix single missing
 CarID_dict = CarID_dict = dict(iter(df1819.groupby('CarID')))
-for sub_df in tqdm.tqdm(CarID_dict.values()):
+for sub_df in CarID_dict.values():
     sub_df = sub_df.sort_values(by = 'Reservation_Time')
     idx_fix_start = [sub_df.index.get_loc(x) for x in sub_df[sub_df.Fuel_Start == 0].index]
 
@@ -376,7 +377,7 @@ df1819 = pd.concat(dfs,ignore_index=False).sort_values(by = 'Reservation_Time')
 
 # Fix missing where start is available
 CarID_dict = CarID_dict = dict(iter(df1819.groupby('CarID')))
-for sub_df in tqdm.tqdm(CarID_dict.values()):
+for sub_df in CarID_dict.values():
     sub_df = sub_df.sort_values(by = 'Reservation_Time')
     idx_fix_start = [sub_df.index.get_loc(x) for x in sub_df[sub_df.Fuel_Start <= 0].index if x > 0]
 
@@ -482,6 +483,7 @@ df1819 = df1819.astype({'CustomerID': 'int32', 'RentalID': 'int64', 'Start_Zone'
 # Sort dataset
 df_sorted = df1819.sort_values("Reservation_Time")
 df_sorted.CarID.nunique()
+df_sorted.to_csv('data/processed/Full_data_set.csv')
 
 print('Zones added. Now creating vacancy dataframe (takes around 20 minutes)...')
 print(f'Time elapsed: {time.time()-t}')
