@@ -270,6 +270,11 @@ fix_idx_RM = [x for x in overlap_df[(overlap_df[1] == 'Non_Customer' ) & (overla
 for fix_idx in fix_idx_RM:
     df.loc[fix_idx, 'End_Time'] = df.loc[fix_idx,'Reservation_Time']+pd.to_timedelta(df.loc[fix_idx,'Reservation_Minutes'], 'm')
 
+
+# Fix trips with 0 time
+idx_to_drop = df[df.Reservation_Time == df.End_Time].index
+df.drop(index = idx_to_drop, inplace = True)
+
 print('Overlaps fixed! Slicing out 2018-2019')
 print(f'Time elapsed: {time.time()-t}')
 
@@ -376,7 +381,7 @@ for sub_df in CarID_dict.values():
 df1819 = pd.concat(dfs,ignore_index=False).sort_values(by = 'Reservation_Time')
 
 # Fix missing where start is available
-CarID_dict = CarID_dict = dict(iter(df1819.groupby('CarID')))
+CarID_dict = dict(iter(df1819.groupby('CarID')))
 for sub_df in CarID_dict.values():
     sub_df = sub_df.sort_values(by = 'Reservation_Time')
     idx_fix_start = [sub_df.index.get_loc(x) for x in sub_df[sub_df.Fuel_Start <= 0].index if x > 0]
