@@ -128,8 +128,8 @@ WinterTimeIndexForward = [x for x in WinterTimeIndex if x not in WinterTimeIndex
 df.loc[WinterTimeIndexBack, 'Reservation_Time'] = df.loc[WinterTimeIndexBack, 'Reservation_Time'] - pd.to_timedelta(1,'h')
 df.loc[WinterTimeIndexForward, 'End_Time'] = df.loc[WinterTimeIndexForward, 'End_Time'] + pd.to_timedelta(1,'h')
 
-# Remove remaining 50 observations as they will not introduce more vacancy time
-df.drop(index = df[df.Reservation_Time > df.End_Time].index, inplace = True)
+# Remove remaining ish 350 observations as they will not introduce more vacancy time
+df.drop(index = df[df.Reservation_Time >= df.End_Time].index, inplace = True)
 
 print('Merging non-customers...')
 print(f'Time elapsed: {time.time()-t}')
@@ -168,6 +168,7 @@ df = pd.concat(dfs,ignore_index=False).sort_values(by = 'Reservation_Time')
 
 print('Fixing overlapping times...')
 
+
 # Overlapping trips
 CarID_dict = dict(iter(df.groupby('CarID')))
 tat = []
@@ -179,13 +180,13 @@ endtat3 = []
 # Generate dataset with rows to be fixed
 for car,dataf in CarID_dict.items():
     dataf = dataf.sort_values(by = 'Reservation_Time')
-    tap = list( zip( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]].Customer_Group.values, dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]+1].Customer_Group.values ) )
+    tap = list( zip( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<=dataf.End_Time.iloc[:-1].values)[0]].Customer_Group.values, dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<=dataf.End_Time.iloc[:-1].values)[0]+1].Customer_Group.values ) )
     tat.extend( tap )
 
-    endtat0.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]].index )
-    endtat1.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]].Customer_Group )
-    endtat2.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]+1].Customer_Group )
-    endtat3.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<dataf.End_Time.iloc[:-1].values)[0]].End_Lat )
+    endtat0.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<=dataf.End_Time.iloc[:-1].values)[0]].index )
+    endtat1.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<=dataf.End_Time.iloc[:-1].values)[0]].Customer_Group )
+    endtat2.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<=dataf.End_Time.iloc[:-1].values)[0]+1].Customer_Group )
+    endtat3.extend( dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values<=dataf.End_Time.iloc[:-1].values)[0]].End_Lat )
 
 overlap_df = pd.DataFrame(data=[endtat0,endtat1,endtat2,endtat3]).T
 
@@ -220,7 +221,7 @@ df.loc[2376045,'Reservation_Time'] = pd.Timestamp("2016-08-05 12:49:38")
 df.loc[661513,'End_Time'] = pd.Timestamp("2017-12-02 16:16:24")
 df.loc[784104,'End_Time'] = pd.Timestamp("2017-10-04 12:20:10")
 
-df.drop(index = [22088, 25828, 809192, 664080, 1137264, 713741, 1604116, 2470015, 404202, 661521, 404308], inplace = True)
+df.drop(index = [22088, 25828, 809192, 664080, 713741, 1604116, 404202, 661521, 404308, 2011589], inplace = True)
 
 # Customer to non customer
 fix_idxCNC = overlap_df[(overlap_df[1]=='Customer') & (overlap_df[2]=='Non_Customer')][0].values
@@ -271,12 +272,23 @@ for fix_idx in fix_idx_RM:
     df.loc[fix_idx, 'End_Time'] = df.loc[fix_idx,'Reservation_Time']+pd.to_timedelta(df.loc[fix_idx,'Reservation_Minutes'], 'm')
 
 
-# Fix trips with 0 time
-idx_to_drop = df[df.Reservation_Time == df.End_Time].index
-df.drop(index = idx_to_drop, inplace = True)
+# And the ones that is picked up after 0 seconds is fixed below
+CarID_dict = dict(iter(df.groupby('CarID')))
+tat = []
+
+for car,dataf in CarID_dict.items():
+    dataf = dataf.sort_values(by = 'Reservation_Time')
+    tap = list(dataf.iloc[np.where(dataf.Reservation_Time.iloc[1:].values==dataf.End_Time.iloc[:-1].values)[0]+1].index.values )
+    tat.extend( tap )
+df.loc[tat,'Reservation_Time'] = df.loc[tat,'Reservation_Time'] + pd.Timedelta(seconds=1)
+
+
+df.drop(index = [1056092, 2470015], inplace = True)
 
 print('Overlaps fixed! Slicing out 2018-2019')
 print(f'Time elapsed: {time.time()-t}')
+
+
 
 # 2018+2019
 df1819 = df[df.Reservation_Time >= pd.Timestamp("2018-01-01")]
