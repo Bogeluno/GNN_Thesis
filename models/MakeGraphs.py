@@ -155,7 +155,7 @@ for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]
         
     # Save graph if new time 
     if positive_time[idx]:
-        Graph_dict[next_row.time] = (node_data, As)
+        Graph_dict[next_row.time] = (node_data.copy(), As.copy())
 
     # Save file every day on last obs
     if new_day[idx]:
