@@ -76,6 +76,9 @@ df.loc[(df.CarID == 'WBA1R5103K7D66678') & (df.Engine == '0'), 'Engine'] = '118I
 df.loc[(df.CarID == 'WBY8P2105K7D70350') & (df.Engine == '0'), 'Engine'] = 'I3 120'
 df.loc[(df.CarID == 'WBY8P2102K7D70287') & (df.Engine == '0'), 'Engine'] = 'I3 120'
 
+# Align engine types
+df.replace({'I3 120': 'I3', 'I3 94': 'I3', 'X1 SDRIVE18I': 'X1', 'X2 SDRIVE18I': 'X1'}, inplace = True)
+
 # Convert time types
 df['Reservation_Time'] = pd.to_datetime(df['Reservation_Time'], format="%d.%m.%Y %H:%M:%S")
 df['End_Time'] = pd.to_datetime(df['End_Time'], format="%d.%m.%Y %H:%M:%S")

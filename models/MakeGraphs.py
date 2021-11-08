@@ -123,12 +123,13 @@ As = sparse.csr_matrix(A.values)
 Graph_dict = {pd.Timestamp('2018-07-09 14:27:00'): (start_df_graph ,As)}
 node_data = start_df_graph.set_index('car')
 
-time_to_next = propegate_df.time.diff().shift(-1)
-positive_time = (time_to_next > pd.Timedelta(0,'s'))
+positive_time = propegate_df[propegate_df.action].time.diff().shift(-1) > pd.Timedelta(0,'s')
+positive_time[-1] = True
 
 new_day = (propegate_df.time.dt.date.diff().shift(-1) > pd.Timedelta(0,'s'))
+new_day[-1] = True
 
-
+i = 0
 for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]):
     if next_row.action: # True is park
         # Get current locs
@@ -154,7 +155,7 @@ for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]
         node_data.drop(index = next_row.car, inplace=True)
         
     # Save graph if new time 
-    if positive_time[idx]:
+    if positive_time.get(idx):
         Graph_dict[next_row.time] = (node_data.copy(), As.copy())
 
     # Save file every day on last obs
@@ -165,4 +166,3 @@ for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]
 
         # Clear memory
         Graph_dict = {}
-
