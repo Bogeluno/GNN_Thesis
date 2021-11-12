@@ -6,7 +6,9 @@ folium
 networkx
 matplotlib
 mapsplotlib
+seaborn
 GPy
+bs4
 tqdm
 openpyxl
 osmnx

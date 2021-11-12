@@ -508,7 +508,7 @@ df_sorted.to_csv('data/processed/Full_data_set.csv')
 print('Zones added. Now creating vacancy dataframe (takes around 20 minutes)...')
 print(f'Time elapsed: {time.time()-t}')
 
-CarID_dict = CarID_dict = dict(iter(df1819.groupby('CarID')))
+CarID_dict =  dict(iter(df1819.groupby('CarID')))
 
 data = []
 for car, sub_df in tqdm.tqdm(CarID_dict.items()):
