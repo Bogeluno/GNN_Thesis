@@ -23,7 +23,7 @@ df['weekend'] = df.time.dt.weekday//5
 df['hour_index'] = df.time.dt.hour.map(trafic_index)
 
 # No more than 3 days
-df = df[df.time_to_reservation < 72]
+df = df[df.time_to_reservation < 48]
 
 # Remove zones with too little support
 df = df[~df.leave_zone.isin((df.leave_zone.value_counts() < 30).index[df.leave_zone.value_counts() < 30])]
@@ -69,7 +69,7 @@ def haversine(point1, point2):
     # Deltas
     delta_lon = lon2 - lon1 
     delta_lat = lat2 - lat1 
-    
+        
     # haversine formula 
     a = np.sin(delta_lat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(delta_lon/2)**2
     c = 2 * np.arcsin(np.sqrt(a)) 
@@ -77,6 +77,9 @@ def haversine(point1, point2):
     return c * r
 
 df['dist_to_station'] = [min({k:haversine(v,r[1].values) for k,v in Stations.items()}.values()) for r in tqdm(df[['park_location_lat',	'park_location_long']].iterrows(), total = len(df))]
+
+# Drop those far away
+df = df[df['dist_to_station'] <= 7000]
 
 # Drop some columns
 df.drop(columns=['index','park_location_lat', 'park_location_long', 'leave_location_lat', 'leave_location_long', 'leave_fuel', 'park_zone', 'moved', 'movedTF', 'park_time', 'reserve_time'], inplace = True)
