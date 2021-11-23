@@ -1,4 +1,4 @@
-numpy
+numpy==1.19.5
 pandas
 geopandas
 rtree
@@ -20,3 +20,4 @@ torch-geometric
 torch-geometric-temporal==0.40
 tensorflow
 keras
+shap
