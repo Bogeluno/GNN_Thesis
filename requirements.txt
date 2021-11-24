@@ -1,8 +1,9 @@
-numpy==1.19.5
+numpy
 pandas
 geopandas
 rtree
 folium
+selenium
 networkx
 matplotlib
 mapsplotlib
@@ -12,7 +13,7 @@ bs4
 tqdm
 openpyxl
 osmnx
-torch
+torch==1.9.0
 pytorch_lightning
 torch-scatter -f https://data.pyg.org/whl/torch-1.9.0+cpu.html
 torch-sparse -f https://data.pyg.org/whl/torch-1.9.0+cpu.html
