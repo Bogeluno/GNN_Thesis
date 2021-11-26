@@ -9,7 +9,7 @@ from torch_geometric import utils, data
 pd.set_option('mode.chained_assignment',None)
 
 # Get zones
-zones = [int(z[3:]) for z in pd.read_csv('data/processed/SimpleNNData.csv', index_col=0).filter(regex = 'lz').columns]
+zones = [int(z[3:]) for z in pd.read_csv('SimpleNNData.csv', index_col=0).filter(regex = 'lz').columns]
 
 # Make datasets for PTG
 def make_PTG(graph, zones):
@@ -65,13 +65,12 @@ def make_PTG(graph, zones):
 sdate = date(2019, 8, 15)   # start date
 edate = date(2019, 12, 18)   # end date
 delta = edate - sdate       # as timedelta
-files = ['data/processed/graphs/'+(sdate + timedelta(days=i)).strftime("%Y%m%d")+'.pickle' for i in range(delta.days + 1)]
+files = ['graphs/'+(sdate + timedelta(days=i)).strftime("%Y%m%d")+'.pickle' for i in range(delta.days + 1)]
 
 
-# load them
-dataset = []
-
+# Load and save them one by one
 for file in tqdm(files):
+    dataset = []
     with open(file, 'rb') as f:
         graph_collection = pickle.load(f)
 
@@ -80,29 +79,21 @@ for file in tqdm(files):
         if res:
             dataset.append(res)
 
+    # Creat train, val, test
+    train_val_size = int(0.8 * len(dataset))
+    val_test_size = len(dataset)-train_val_size
+    train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
+    train_size = train_val_size-val_test_size
+    train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
 
-# Creat train, val, test
-train_val_size = int(0.8 * len(dataset))
-val_test_size = len(dataset)-train_val_size
-train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
-train_size = train_val_size-val_test_size
-train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
-del dataset, zones, files,
+    date_f = file[11:15]
 
-# Save them
-print('Saving files')
-with open('data/processed/GNNDatasets/Train.pickle', 'wb') as handle:
-    pickle.dump(train_data, handle, pickle.HIGHEST_PROTOCOL)
-del train_data
-print('Train done')
+    with open(f'GNNDatasets/Train{date_f}.pickle', 'wb') as handle:
+        pickle.dump(train_data, handle, pickle.HIGHEST_PROTOCOL)
 
-with open('data/processed/GNNDatasets/Val.pickle', 'wb') as handle:
-    pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
-del val_data
-print('Val done')
+    with open(f'GNNDatasets/Val{date_f}.pickle', 'wb') as handle:
+        pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
 
-with open('data/processed/GNNDatasets/Test.pickle', 'wb') as handle:
-    pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
-del test_data
-
-print('Test done')
+    with open(f'GNNDatasets/Test{date_f}.pickle', 'wb') as handle:
+        pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
+    
