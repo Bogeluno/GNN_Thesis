@@ -22,3 +22,4 @@ torch-geometric-temporal==0.40
 tensorflow
 keras
 shap
+joblib

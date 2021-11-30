@@ -8,7 +8,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.neighbors import KNeighborsRegressor
+import time
 
+t = time.time()
 
 # Load full Data
 df_full = pd.read_csv('GNNDatasets/SimpleNNData.csv', index_col=0)
@@ -109,3 +111,6 @@ weights = KNN_cv.cv_results_['param_model__weights'].data[best_idx]
 print(f'n_neighbors = {n_neighbors}', f'weights = {weights}')
 
 score_model(KNN_cv, X_train, X_test, y_train, y_test)
+
+
+print(f'Done! Time = {time.time()-t}')
