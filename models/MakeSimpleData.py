@@ -16,6 +16,9 @@ from tqdm import tqdm
 # Load data 
 df = pd.read_csv('data/processed/Fall2019P.csv', index_col=0, parse_dates=[1])
 
+# Cut september and october
+df = df[(df.time.dt.month == 9) | (df.time.dt.month == 10)]
+
 df['timeh'] = df.time.round('h').dt.hour
 trafic_index = dict(df.groupby('timeh').mean()['time_to_reservation'])
 df.drop(columns = ['timeh'], inplace=True)
@@ -51,25 +54,25 @@ df.time = df.time.round('H')
 df = df.set_index('time').join(df_weather).reset_index()
 
 # Average weather
-df['park_time'] = df['index'].round('H')
-df['reserve_time'] = (df['index']+pd.to_timedelta(df.time_to_reservation,'h')).round('H')
+#df['park_time'] = df['index'].round('H')
+#df['reserve_time'] = (df['index']+pd.to_timedelta(df.time_to_reservation,'h')).round('H')
 
-weather_average1 = pd.DataFrame(data=[df_weather.loc[
-    pd.to_datetime(np.linspace(row.park_time.value, row.reserve_time.value, int((row.reserve_time-row.park_time)/ np.timedelta64(1, 'h'))+1)) 
-    ].mean().values for _, row in tqdm(df.iterrows(), total = len(df))
-], columns = ['Avg_'+x for x in df_weather.columns], index = df.index)
+#weather_average1 = pd.DataFrame(data=[df_weather.loc[
+#    pd.to_datetime(np.linspace(row.park_time.value, row.reserve_time.value, int((row.reserve_time-row.park_time)/ np.timedelta64(1, 'h'))+1)) 
+#    ].mean().values for _, row in tqdm(df.iterrows(), total = len(df))
+#], columns = ['Avg_'+x for x in df_weather.columns], index = df.index)
 
-df = pd.concat([df ,weather_average1], axis = 1)
+#df = pd.concat([df ,weather_average1], axis = 1)
 
 # Average Weather Index
-df['park_time'] = df['index'].round('H')
+#df['park_time'] = df['index'].round('H')
 
-weather_average2 = pd.DataFrame(data=[df_weather.loc[
-    pd.to_datetime(np.linspace(row.park_time.value, row.park_time.value+pd.to_timedelta(round(row.hour_index), 'h').value, int((row.park_time+pd.to_timedelta(round(row.hour_index), 'h')-row.park_time)/ np.timedelta64(1, 'h'))+1))
-    ].mean().values for _, row in tqdm(df.iterrows(), total = len(df))
-], columns = ['Avg_Index_'+x for x in df_weather.columns], index = df.index)
+#weather_average2 = pd.DataFrame(data=[df_weather.loc[
+#    pd.to_datetime(np.linspace(row.park_time.value, row.park_time.value+pd.to_timedelta(round(row.hour_index), 'h').value, int((row.park_time+pd.to_timedelta(round(row.hour_index), 'h')-row.park_time)/ np.timedelta64(1, 'h'))+1))
+#    ].mean().values for _, row in tqdm(df.iterrows(), total = len(df))
+#], columns = ['Avg_Index_'+x for x in df_weather.columns], index = df.index)
 
-df = pd.concat([df ,weather_average2], axis = 1)
+#df = pd.concat([df ,weather_average2], axis = 1)
 
 # Add dist to station
 with open('data/processed/Train_stations.pickle', 'rb') as handle:
@@ -97,7 +100,10 @@ df['dist_to_station'] = [min({k:haversine(v,r[1].values) for k,v in Stations.ite
 df = df[df['dist_to_station'] <= 7000]
 
 # Drop some columns
-df.drop(columns=['park_location_lat', 'park_location_long', 'leave_location_lat', 'leave_location_long', 'park_fuel', 'park_zone', 'moved', 'movedTF', 'park_time', 'reserve_time'], inplace = True)
+df.drop(columns=['park_location_lat', 'park_location_long', 'leave_location_lat', 'leave_location_long', 'park_fuel', 'park_zone', 'moved', 'movedTF'], inplace = True)
+
+# Remove rounded november
+df = df[df.iloc[:,0].dt.month != 11]
 
 # Save
 df.to_csv('data/processed/SimpleNNData.csv')

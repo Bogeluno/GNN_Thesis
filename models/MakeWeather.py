@@ -14,8 +14,8 @@ def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
-start_date = datetime(2019,8,14)
-end_date = datetime(2019,12,21)
+start_date = datetime(2019,8,31)
+end_date = datetime(2019,11,1)
 
 dates = [single_date.strftime("%Y-%m-%d") for single_date in daterange(start_date, end_date)]
 
@@ -38,6 +38,8 @@ weather_df = pd.concat(ss, axis=1, keys = param_list)
 
 # Fix index
 weather_df.index = pd.to_datetime(weather_df.index).tz_convert('EET').tz_localize(None)
+
+weather_df = weather_df.iloc[21:-1]
 
 # Save dataframe
 weather_df.to_csv('data/processed/weather.csv')

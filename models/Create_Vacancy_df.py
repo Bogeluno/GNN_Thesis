@@ -539,5 +539,5 @@ df_vacancy = pd.DataFrame(data = data, columns = ['car', 'park_time', 'reservati
 df_vacancy = df_vacancy.convert_dtypes()
 
 # Save
-df_vacancy.to_csv('data/processed/Vacancy_new.csv')
+df_vacancy.to_csv('data/processed/Vacancy.csv')
 print(f'Done! Total time:{time.time()-t}')
