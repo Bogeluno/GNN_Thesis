@@ -5,7 +5,7 @@ import pickle
 import glob
 from scipy import sparse
 import torch
-from datetime import date, timedelta
+import gc
 import subprocess
 from torch_geometric import utils, data
 pd.set_option('mode.chained_assignment',None)
@@ -105,24 +105,26 @@ for file in tqdm(files[1:]):
     test_data = torch.utils.data.ConcatDataset([test_data,test_data_tmp])
 
 print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
-for name in dir():
-    if name not in ['train_data', 'val_data', 'test_data']:
-        del globals()[name]
-print(dir())
+print('Deleting other variables')
+del zones, files, dataset, res, train_val_size, val_test_size, train_size, train_val_data_tmp, train_data_tmp, val_data_tmp, test_data_tmp
+gc.collect()
 print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
 
+
+with open(f'GNNDatasets/Val_data.pickle', 'wb') as handle:
+    pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
+print('Val dumped\n')
+del val_data
+gc.collect()
+print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
+
+with open(f'GNNDatasets/Test_data.pickle', 'wb') as handle:
+    pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
+print('Test dumped\n')
+del test_data
+gc.collect()
+print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
 
 with open(f'GNNDatasets/Train_data.pickle', 'wb') as handle:
     pickle.dump(train_data, handle, pickle.HIGHEST_PROTOCOL)
 print('Train dumped')
-del train_data
-
-with open(f'GNNDatasets/Val_data.pickle', 'wb') as handle:
-    pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
-print('Val dumped')
-del val_data
-
-with open(f'GNNDatasets/Test_data.pickle', 'wb') as handle:
-    pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
-print('Test dumped')
-
