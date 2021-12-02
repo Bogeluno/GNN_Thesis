@@ -15,7 +15,13 @@ from torch_geometric.loader import DataLoader
 from sklearn.metrics import r2_score
 import subprocess
 import time
+
 batch_size = int(sys.argv[1])
+no_days = int(sys.argv[2])
+
+if no_days > 60:
+    sys.exit('No days can not be larger than 60')
+
 print(f'Batch_size: {batch_size}')
 pd.set_option('mode.chained_assignment',None)
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -74,54 +80,69 @@ def make_PTG(graph, zones):
 
     return d
 
-zones = [int(z[3:]) for z in pd.read_csv('SimpleNNData.csv', index_col=0).filter(regex = 'lz').columns]
+print(f'Time spent: {time.time()-t}')
+# Load datasets
+if no_days == 0:
+    with open('GNNDatasets/Train_data.pickle', 'rb') as f:
+        train_data = pickle.load(f)
+    print('Train data loaded')
 
+    with open('GNNDatasets/Val_data.pickle', 'rb') as f:
+        val_data = pickle.load(f)
+    print('Validation data loaded')
 
-sdate = date(2019, 9, 1)   # start date
-edate = date(2019, 10, 31)   # end date
-delta = edate - sdate       # as timedelta
-files = ['Graphs/'+(sdate + timedelta(days=i)).strftime("%Y%m%d")+'.pickle' for i in range(delta.days + 1)]
+    with open('GNNDatasets/Test_data.pickle', 'rb') as f:
+        test_data = pickle.load(f)
+    print('Test data loaded')
 
-dataset = []
+# Generate datasets
+else:
+    zones = [int(z[3:]) for z in pd.read_csv('SimpleNNData.csv', index_col=0).filter(regex = 'lz').columns]
 
-with open(files[0], 'rb') as f:
-    graph_collection = pickle.load(f)
+    sdate = date(2019, 9, 1) # start date
+    delta = timedelta(days=no_days)
+    files = ['Graphs/'+(sdate + timedelta(days=i)).strftime("%Y%m%d")+'.pickle' for i in range(delta.days + 1)]
 
-for g in graph_collection.values():
-    res = make_PTG(g,zones)
-    if res:
-        dataset.append(res)
-
-train_val_size = int(0.8 * len(dataset))
-val_test_size = len(dataset)-train_val_size
-train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
-train_size = train_val_size-val_test_size
-train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
-del train_val_data
-
-for file in tqdm(files[1:]):
     dataset = []
-    with open(file, 'rb') as f:
+
+    with open(files[0], 'rb') as f:
         graph_collection = pickle.load(f)
 
-    for g in tqdm(graph_collection.values()):
+    for g in graph_collection.values():
         res = make_PTG(g,zones)
         if res:
             dataset.append(res)
 
     train_val_size = int(0.8 * len(dataset))
     val_test_size = len(dataset)-train_val_size
-    train_val_data_tmp, test_data_tmp = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
+    train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
     train_size = train_val_size-val_test_size
-    train_data_tmp, val_data_tmp = torch.utils.data.random_split(train_val_data_tmp, [train_size, val_test_size])
+    train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
+    del train_val_data
 
-    train_data = torch.utils.data.ConcatDataset([train_data,train_data_tmp])
-    val_data = torch.utils.data.ConcatDataset([val_data,val_data_tmp])
-    test_data = torch.utils.data.ConcatDataset([test_data,test_data_tmp])
+    for file in tqdm(files[1:]):
+        dataset = []
+        with open(file, 'rb') as f:
+            graph_collection = pickle.load(f)
 
-    
+        for g in tqdm(graph_collection.values()):
+            res = make_PTG(g,zones)
+            if res:
+                dataset.append(res)
 
-del train_val_data_tmp, test_data_tmp, train_data_tmp, val_data_tmp, dataset
+        train_val_size = int(0.8 * len(dataset))
+        val_test_size = len(dataset)-train_val_size
+        train_val_data_tmp, test_data_tmp = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
+        train_size = train_val_size-val_test_size
+        train_data_tmp, val_data_tmp = torch.utils.data.random_split(train_val_data_tmp, [train_size, val_test_size])
+
+        train_data = torch.utils.data.ConcatDataset([train_data,train_data_tmp])
+        val_data = torch.utils.data.ConcatDataset([val_data,val_data_tmp])
+        test_data = torch.utils.data.ConcatDataset([test_data,test_data_tmp])
+
+    del train_val_data_tmp, test_data_tmp, train_data_tmp, val_data_tmp, dataset, zones
+print(f'Time spent: {time.time()-t}')
+
 train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, drop_last=True, num_workers = 4)
 val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=True, drop_last=True, num_workers = 4)
 test_loader = DataLoader(test_data, batch_size=1, shuffle=False, drop_last=False, num_workers = 4)
@@ -131,9 +152,9 @@ print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-
 class GCN(torch.nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = GCNConv(269, 64)
-        self.conv2 = GCNConv(64, 32)
-        self.conv3 = GCNConv(32, 1)
+        self.conv1 = GCNConv(264, 128)
+        self.conv2 = GCNConv(128, 64)
+        self.conv3 = GCNConv(64, 1)
 
     def forward(self, data):
         x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
@@ -156,7 +177,7 @@ optimizer = optim.Adam(GNN.parameters(), lr=0.002, weight_decay = 0.00003)
 criterion = nn.MSELoss(reduction = 'mean')
 
 # Set number of epochs
-num_epochs = 25
+num_epochs = 20
 
 # Set up lists for loss/R2
 train_r2, train_loss = [], []

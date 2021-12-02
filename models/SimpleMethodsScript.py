@@ -1,8 +1,6 @@
 import sys
 import pandas as pd
 import numpy as np
-from tqdm import tqdm
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
@@ -14,13 +12,13 @@ from sklearn.neighbors import KNeighborsRegressor
 import time
 
 # Load full Data
-df_full = pd.read_csv('data/processed/SimpleNNData.csv', index_col=0)
+df_full = pd.read_csv('SimpleNNData.csv', index_col=0)
 y = df_full.time_to_reservation
 df_full.drop(columns=['time_to_reservation'], inplace=True)
 weather_var = list(df_full.columns[-8:-1])
 
 # Set up print
-sys.stdout = open("testtext.txt", "w")
+sys.stdout = open("SimpleResults.txt", "w")
 
 # Function for scores
 def score_model(model, X_train, X_test, y_train, y_test):
@@ -137,8 +135,8 @@ score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
 RF_model = RandomForestRegressor()
 
 parameters = {
-    'model__n_estimators': [50,100,200],
-    'model__min_samples_leaf': [5,10,20]
+    'model__n_estimators': [100,200,300,400],
+    'model__min_samples_leaf': [10,20,30]
 }
 
 RF_pipe = getPipe(
@@ -160,7 +158,7 @@ score_model(RF_cv, X_train, X_test, y_train, y_test)
 KNN_model = KNeighborsRegressor()
 
 parameters = {
-    'model__n_neighbors': [50,100,150],
+    'model__n_neighbors': [50,100,200,300],
     'model__weights': ['uniform', 'distance']
 }
 
@@ -235,8 +233,8 @@ score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
 RF_model = RandomForestRegressor()
 
 parameters = {
-    'model__n_estimators': [50,100,200],
-    'model__min_samples_leaf': [5,10,20]
+    'model__n_estimators': [100,200, 300, 400],
+    'model__min_samples_leaf': [10,20,30]
 }
 
 RF_pipe = getPipe(
@@ -258,7 +256,7 @@ score_model(RF_cv, X_train, X_test, y_train, y_test)
 KNN_model = KNeighborsRegressor()
 
 parameters = {
-    'model__n_neighbors': [50,100,150],
+    'model__n_neighbors': [50,100,200],
     'model__weights': ['uniform', 'distance']
 }
 
@@ -310,7 +308,7 @@ elastic_net_model = ElasticNet(fit_intercept = True)
 
 parameters = {
     'model__alpha': np.logspace(-3, -0.5, 10),
-    'model__l1_ratio': [0.01,0.05,0.1,0.2]
+    'model__l1_ratio': [0.01,0.1,0.2,0.5,0.8,1]
 }
 
 elastic_net_pipe = getPipe(
@@ -331,8 +329,8 @@ score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
 RF_model = RandomForestRegressor()
 
 parameters = {
-    'model__n_estimators': [50,100,200],
-    'model__min_samples_leaf': [5,10,20]
+    'model__n_estimators': [100,200,300,400],
+    'model__min_samples_leaf': [10,20,30]
 }
 
 RF_pipe = getPipe(
@@ -354,7 +352,7 @@ score_model(RF_cv, X_train, X_test, y_train, y_test)
 KNN_model = KNeighborsRegressor()
 
 parameters = {
-    'model__n_neighbors': [50,100,150],
+    'model__n_neighbors': [50,100,150,200],
     'model__weights': ['uniform', 'distance']
 }
 
@@ -407,7 +405,7 @@ elastic_net_model = ElasticNet(fit_intercept = True)
 numerical_columns = ['leave_fuel', 'degree', 'dist_to_station', 'Time_Cos', 'Time_Sin']+weather_var[:7]
 
 parameters = {
-    'model__alpha': np.logspace(-3, -1, 10),
+    'model__alpha': np.logspace(-3, 0, 10),
     'model__l1_ratio': [0.1,0.5,0.9,1]
 }
 
@@ -489,7 +487,7 @@ score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
 RF_model = RandomForestRegressor()
 
 parameters = {
-    'model__n_estimators': [50,100,200],
+    'model__n_estimators': [100,200,300,400],
     'model__min_samples_leaf': [5,10,20]
 }
 
@@ -511,8 +509,8 @@ score_model(RF_cv, X_train, X_test, y_train, y_test)
 KNN_model = KNeighborsRegressor()
 
 parameters = {
-    'model__n_neighbors': [50,100]
-    #'model__weights': ['uniform', 'distance']
+    'model__n_neighbors': [20,35, 50, 100],
+    'model__weights': ['uniform', 'distance']
 }
 
 KNN_pipe = getPipe(

@@ -2,9 +2,11 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import pickle
+import glob
 from scipy import sparse
 import torch
 from datetime import date, timedelta
+import subprocess
 from torch_geometric import utils, data
 pd.set_option('mode.chained_assignment',None)
 
@@ -51,6 +53,10 @@ def make_PTG(graph, zones):
     attr['engine']= pd.Categorical(attr['engine'], categories=['118I', 'I3', 'COOPER', 'X1'])
     attr = pd.get_dummies(attr, columns = ['engine'], prefix='eng')
 
+    # Normalize fuel and dist 
+    attr['leave_fuel'] = attr['leave_fuel']/100
+    #df['dist_to_station'] = df['dist_to_station']/5320
+
     # Get edges
     edge_index, edge_weight = utils.convert.from_scipy_sparse_matrix(adj)
 
@@ -59,17 +65,26 @@ def make_PTG(graph, zones):
 
     return d
 
-
-
 # Get files
-sdate = date(2019, 8, 15)   # start date
-edate = date(2019, 12, 18)   # end date
-delta = edate - sdate       # as timedelta
-files = ['graphs/'+(sdate + timedelta(days=i)).strftime("%Y%m%d")+'.pickle' for i in range(delta.days + 1)]
+files = glob.glob("Graphs/*")
 
+dataset = []
+with open(files[0], 'rb') as f:
+    graph_collection = pickle.load(f)
 
-# Load and save them one by one
-for file in tqdm(files):
+for g in graph_collection.values():
+    res = make_PTG(g,zones)
+    if res:
+        dataset.append(res)
+
+train_val_size = int(0.8 * len(dataset))
+val_test_size = len(dataset)-train_val_size
+train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
+train_size = train_val_size-val_test_size
+train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
+del train_val_data
+
+for file in tqdm(files[1:]):
     dataset = []
     with open(file, 'rb') as f:
         graph_collection = pickle.load(f)
@@ -79,21 +94,35 @@ for file in tqdm(files):
         if res:
             dataset.append(res)
 
-    # Creat train, val, test
     train_val_size = int(0.8 * len(dataset))
     val_test_size = len(dataset)-train_val_size
-    train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
+    train_val_data_tmp, test_data_tmp = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
     train_size = train_val_size-val_test_size
-    train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
+    train_data_tmp, val_data_tmp = torch.utils.data.random_split(train_val_data_tmp, [train_size, val_test_size])
 
-    date_f = file[11:15]
+    train_data = torch.utils.data.ConcatDataset([train_data,train_data_tmp])
+    val_data = torch.utils.data.ConcatDataset([val_data,val_data_tmp])
+    test_data = torch.utils.data.ConcatDataset([test_data,test_data_tmp])
 
-    with open(f'GNNDatasets/Train{date_f}.pickle', 'wb') as handle:
-        pickle.dump(train_data, handle, pickle.HIGHEST_PROTOCOL)
+print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
+for name in dir():
+    if name not in ['train_data', 'val_data', 'test_data']:
+        del globals()[name]
+print(dir())
+print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
 
-    with open(f'GNNDatasets/Val{date_f}.pickle', 'wb') as handle:
-        pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
 
-    with open(f'GNNDatasets/Test{date_f}.pickle', 'wb') as handle:
-        pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
-    
+with open(f'GNNDatasets/Train_data.pickle', 'wb') as handle:
+    pickle.dump(train_data, handle, pickle.HIGHEST_PROTOCOL)
+print('Train dumped')
+del train_data
+
+with open(f'GNNDatasets/Val_data.pickle', 'wb') as handle:
+    pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
+print('Val dumped')
+del val_data
+
+with open(f'GNNDatasets/Test_data.pickle', 'wb') as handle:
+    pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
+print('Test dumped')
+
