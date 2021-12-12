@@ -8,7 +8,7 @@ from scipy import sparse
 import matplotlib.pyplot as plt
 import torch
 #from torch_geometric import utils, data
-
+ 
 def haversine_start(df, car1, car2, max_dist = 1500):
     def _edge_weight(x, max_dist):
         return max((max_dist-x)/max_dist,0)
@@ -90,13 +90,14 @@ def delete_rc(mat, i):
 
 
 # Load data
-df = pd.read_csv('VacancySplit.csv', index_col=0, parse_dates = [2]).astype({'time_to_reservation': 'float32', 'park_location_lat': 'float32', 'park_location_long': 'float32', 'leave_location_lat': 'float32', 'leave_location_long': 'float32', 'park_zone': 'int32', 'leave_zone': 'int32', 'park_fuel': 'int8', 'leave_fuel': 'int8', 'moved': 'float32', 'movedTF': 'bool'})
+df = pd.read_csv('data/processed/VacancySplit.csv', index_col=0, parse_dates = [2]).astype({'time_to_reservation': 'float32', 'park_location_lat': 'float32', 'park_location_long': 'float32', 'leave_location_lat': 'float32', 'leave_location_long': 'float32', 'park_zone': 'int32', 'leave_zone': 'int32', 'park_fuel': 'int8', 'leave_fuel': 'int8', 'moved': 'float32', 'movedTF': 'bool'})
 df.info()
 
 # Create init graph
-Start_Time = pd.Timestamp('2018-07-09 14:27:00')
+Start_Time = pd.Timestamp('2019-09-01 00:00:00')
+End_Time = pd.Timestamp('2019-11-01 00:00:00')
 start_df = df[df.time <= Start_Time]
-propegate_df = df[df.time > Start_Time]
+propegate_df = df[(df.time > Start_Time) & (df.time <= End_Time)]
 
 # Start
 CarID_dict_start = dict(iter(start_df.groupby('car')))
@@ -124,10 +125,10 @@ Graph_dict = {pd.Timestamp('2018-07-09 14:27:00'): (start_df_graph ,As)}
 node_data = start_df_graph.set_index('car')
 
 positive_time = propegate_df[propegate_df.action].time.diff().shift(-1) > pd.Timedelta(0,'s')
-positive_time[-1] = True
+positive_time.iloc[-1] = True
 
 new_day = (propegate_df.time.dt.date.diff().shift(-1) > pd.Timedelta(0,'s'))
-new_day[-1] = True
+new_day.iloc[-1] = True
 
 i = 0
 for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]):

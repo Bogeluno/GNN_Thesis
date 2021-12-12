@@ -11,7 +11,7 @@ from torch_geometric import utils, data
 pd.set_option('mode.chained_assignment',None)
 
 # Get zones
-zones = [int(z[3:]) for z in pd.read_csv('SimpleNNData.csv', index_col=0).filter(regex = 'lz').columns]
+zones = [int(z[3:]) for z in pd.read_csv('data/processed/SimpleNNData.csv', index_col=0).filter(regex = 'lz').columns]
 
 # Make datasets for PTG
 def make_PTG(graph, zones):
@@ -66,26 +66,11 @@ def make_PTG(graph, zones):
     return d
 
 # Get files
-files = glob.glob("Graphs/*")
+files = glob.glob("data/processed/Graphs/*")
 
 dataset = []
-with open(files[0], 'rb') as f:
-    graph_collection = pickle.load(f)
 
-for g in graph_collection.values():
-    res = make_PTG(g,zones)
-    if res:
-        dataset.append(res)
-
-train_val_size = int(0.8 * len(dataset))
-val_test_size = len(dataset)-train_val_size
-train_val_data, test_data = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
-train_size = train_val_size-val_test_size
-train_data, val_data = torch.utils.data.random_split(train_val_data, [train_size, val_test_size])
-del train_val_data
-
-for file in tqdm(files[1:]):
-    #dataset = []
+for file in tqdm(files[:30]):
     with open(file, 'rb') as f:
         graph_collection = pickle.load(f)
 
@@ -94,45 +79,22 @@ for file in tqdm(files[1:]):
         if res:
             dataset.append(res)
 
-    train_val_size = int(0.8 * len(dataset))
-    val_test_size = len(dataset)-train_val_size
-    train_val_data_tmp, test_data_tmp = torch.utils.data.random_split(dataset, [train_val_size, val_test_size])
-    train_size = train_val_size-val_test_size
-    train_data_tmp, val_data_tmp = torch.utils.data.random_split(train_val_data_tmp, [train_size, val_test_size])
 
-    train_data = torch.utils.data.ConcatDataset([train_data,train_data_tmp])
-    val_data = torch.utils.data.ConcatDataset([val_data,val_data_tmp])
-    test_data = torch.utils.data.ConcatDataset([test_data,test_data_tmp])
+with open(f'data/processed/GNNDatasets/Sepdataset.pickle', 'wb') as handle:
+    pickle.dump(dataset, handle, pickle.HIGHEST_PROTOCOL)
 
 
-print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
-print('Deleting other variables')
-del zones, files, dataset, res, train_val_size, val_test_size, train_size, train_val_data_tmp, train_data_tmp, val_data_tmp, test_data_tmp
-gc.collect()
-dataset = 0
-train_val_data_tmp = 0
-train_data_tmp = 0
-val_data_tmp = 0
-test_data_tmp = 0
-print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
+dataset = []
+
+for file in tqdm(files[30:]):
+    with open(file, 'rb') as f:
+        graph_collection = pickle.load(f)
+
+    for g in graph_collection.values():
+        res = make_PTG(g,zones)
+        if res:
+            dataset.append(res)
 
 
-with open(f'GNNDatasets/Val_data.pickle', 'wb') as handle:
-    pickle.dump(val_data, handle, pickle.HIGHEST_PROTOCOL)
-print('Val dumped\n')
-del val_data
-gc.collect()
-val_data = 0
-print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
-
-with open(f'GNNDatasets/Test_data.pickle', 'wb') as handle:
-    pickle.dump(test_data, handle, pickle.HIGHEST_PROTOCOL)
-print('Test dumped\n')
-del test_data
-gc.collect()
-test_data = 0
-print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
-
-with open(f'GNNDatasets/Train_data.pickle', 'wb') as handle:
-    pickle.dump(train_data, handle, pickle.HIGHEST_PROTOCOL)
-print('Train dumped')
+with open(f'data/processed/GNNDatasets/Octdataset.pickle', 'wb') as handle:
+    pickle.dump(dataset, handle, pickle.HIGHEST_PROTOCOL)

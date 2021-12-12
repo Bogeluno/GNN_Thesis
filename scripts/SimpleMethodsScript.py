@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -26,6 +26,8 @@ def score_model(model, X_train, X_test, y_train, y_test):
     print(model.estimator.steps[1][1])
     print(f'R2 of training: {r2_score(y_train,model.predict(X_train))}')
     print(f'R2 of test: {r2_score(y_test,model.predict(X_test))}')
+    print(f'MSE of training: {mean_squared_error(y_train,model.predict(X_train))}')
+    print(f'MSE of test: {mean_squared_error(y_test,model.predict(X_test))}')
     print('----------------------------------------------')
     print('')
 
@@ -71,7 +73,7 @@ def cv(pipe, parameters, X_train, y_train, cf = 5):
     cv_select = GridSearchCV(
         estimator=pipe, 
         param_grid=parameters, 
-        scoring='neg_mean_squared_error', # Use MSE
+        scoring='r2', # Use MSE
         n_jobs=-4,
         return_train_score=True,
         verbose=2, 
