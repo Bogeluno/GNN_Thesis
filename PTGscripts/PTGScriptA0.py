@@ -170,11 +170,11 @@ class GCN(torch.nn.Module):
             (GCNConv(264,32),'x, edge_index, edge_weight -> x'),
             #(Linear(264,32),'x -> x'),
             nn.ReLU(inplace = True),
-            #(nn.Dropout(0.1), 'x -> x'),
+            (nn.Dropout(0.15), 'x -> x'),
             #(Linear(128,16),'x -> x'),
             (GCNConv(32,16),'x, edge_index, edge_weight -> x'),
             nn.ReLU(inplace = True),
-            #(nn.Dropout(0.1), 'x -> x'),
+            (nn.Dropout(0.15), 'x -> x'),
             (GCNConv(16,1),'x, edge_index, edge_weight -> x')
         ])
 

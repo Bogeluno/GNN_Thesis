@@ -14,7 +14,7 @@ def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
-start_date = datetime(2019,8,31)
+start_date = datetime(2019,8,14)
 end_date = datetime(2019,11,1)
 
 dates = [single_date.strftime("%Y-%m-%d") for single_date in daterange(start_date, end_date)]
@@ -41,5 +41,21 @@ weather_df.index = pd.to_datetime(weather_df.index).tz_convert('EET').tz_localiz
 
 weather_df = weather_df.iloc[21:-1]
 
+# Remove winter time duplicate
+weather_df = weather_df[~weather_df.index.duplicated()]
+
 # Save dataframe
 weather_df.to_csv('data/processed/weather.csv')
+
+
+# Get weather for normalization
+start_date = datetime(2018,9,1)
+end_date = datetime(2018,11,1)
+
+param_list = ['mean_temp','mean_wind_speed','acc_precip','bright_sunshine','mean_pressure','mean_relative_hum','mean_cloud_cover']
+dates = [single_date.strftime("%Y-%m-%d") for single_date in daterange(start_date, end_date)]
+ss = [get_weather(param, dates, Key) for param in tqdm(param_list)]
+
+MinMax = pd.concat([pd.concat(ss, axis=1, keys = param_list).min().rename('Min'),pd.concat(ss, axis=1, keys = param_list).max().rename('Max')], axis = 1)
+MinMax['diff'] = MinMax['Max']-MinMax['Min']
+MinMax.to_csv('data/processed/MinMaxWeather.csv')

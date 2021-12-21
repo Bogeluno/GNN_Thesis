@@ -59,7 +59,6 @@ def haversine_add(current_locs, to_add, max_dist = 1500):
 
     return new_weights
 
-
 def delete_rc(mat, i):
     # row
     n = mat.indptr[i+1] - mat.indptr[i]
@@ -88,14 +87,45 @@ def delete_rc(mat, i):
 
     return mat.tocsr()
 
+# Haversine function for stations
+def haversine_station(point1, point2):
+    # convert decimal degrees to radians
+    lat1, lon1 = map(np.radians, point1)
+    lat2, lon2 = map(np.radians, point2)
+
+    # Deltas
+    delta_lon = lon2 - lon1 
+    delta_lat = lat2 - lat1 
+
+    # haversine formula 
+    a = np.sin(delta_lat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(delta_lon/2)**2
+    c = 2 * np.arcsin(np.sqrt(a)) 
+    r = 6371000 # Radius of earth in m
+    return c * r
 
 # Load data
 df = pd.read_csv('data/processed/VacancySplit.csv', index_col=0, parse_dates = [2]).astype({'time_to_reservation': 'float32', 'park_location_lat': 'float32', 'park_location_long': 'float32', 'leave_location_lat': 'float32', 'leave_location_long': 'float32', 'park_zone': 'int32', 'leave_zone': 'int32', 'park_fuel': 'int8', 'leave_fuel': 'int8', 'moved': 'float32', 'movedTF': 'bool'})
-df.info()
+
+# Time variables
+df['weekend'] = df.time.dt.weekday//5
+
+# Time encoding
+def circle_transform(col, max_val=86400):
+    tot_sec = ((col - col.dt.normalize()) / pd.Timedelta('1 second')).astype(int)
+    cos_val = np.cos(2*np.pi*tot_sec/max_val)
+    sin_val = np.sin(2*np.pi*tot_sec/max_val)
+    return cos_val, sin_val
+
+df['Time_Cos'], df['Time_Sin'] = [x.values for x in circle_transform(df.time)]
+
+# Join weather
+df_weather = pd.read_csv('data/processed/weather.csv', index_col=0, parse_dates=[0])
+df['timeH'] = df.time.round('H')
+df = df.set_index('timeH').join(df_weather).reset_index(drop=True)
 
 # Create init graph
-Start_Time = pd.Timestamp('2019-09-01 00:00:00')
-End_Time = pd.Timestamp('2019-11-01 00:00:00')
+Start_Time = pd.Timestamp('2019-08-31 21:00:00')
+End_Time = pd.Timestamp('2019-11-01 12:00:00')
 start_df = df[df.time <= Start_Time]
 propegate_df = df[(df.time > Start_Time) & (df.time <= End_Time)]
 
@@ -108,20 +138,25 @@ for sub_df in CarID_dict_start.values():
     if last_obs.action: # True is park
         Start_Garph_data.append(last_obs)
 
-start_df_graph = pd.DataFrame(Start_Garph_data).iloc[:,:-1]
+start_df_graph = pd.DataFrame(Start_Garph_data)
+
+# Add dist to station
+with open('data/processed/Train_stations.pickle', 'rb') as handle:
+    Stations = pickle.load(handle)
+
+
+start_df_graph['dist_to_station'] = [min({k:haversine_station(v,r[1].values) for k,v in Stations.items()}.values()) for r in start_df_graph[['park_location_lat',	'park_location_long']].iterrows()]
+propegate_df['dist_to_station'] = [min({k:haversine_station(v,r[1].values) for k,v in Stations.items()}.values()) for r in tqdm(propegate_df[['park_location_lat',	'park_location_long']].iterrows(), total = len(propegate_df))]
 
 
 # Adj matrix
-max_dist = 1500
-def _edge_weight(x, max_dist):
-        return max((max_dist-x)/max_dist,0)
 A = pd.DataFrame(data = [[haversine_start(start_df_graph, car1, car2) for car1 in start_df_graph.car] for car2 in tqdm(start_df_graph.car)], index = start_df_graph.car, columns=start_df_graph.car, dtype='float16')
 
 # And make it sparse
 As = sparse.csr_matrix(A.values)
 
 # Populate
-Graph_dict = {pd.Timestamp('2018-07-09 14:27:00'): (start_df_graph ,As)}
+Graph_dict = {pd.Timestamp('2019-08-31 21:00:00'): (start_df_graph ,As)}
 node_data = start_df_graph.set_index('car')
 
 positive_time = propegate_df[propegate_df.action].time.diff().shift(-1) > pd.Timedelta(0,'s')
@@ -137,7 +172,7 @@ for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]
         locs = [[attr['leave_location_lat'], attr['leave_location_long']] for _, attr in node_data.iterrows()]
         
         # Add to node data
-        node_data = node_data.append(next_row.rename(index = next_row['car']).iloc[1:16], verify_integrity = True)
+        node_data = node_data.append(next_row.rename(index = next_row['car']).iloc[1:], verify_integrity = True)
 
         # Calculate new weights
         new_weights = haversine_add(locs, next_row, max_dist = 1500)
@@ -161,7 +196,7 @@ for idx, next_row in tqdm(propegate_df.iterrows(), total = propegate_df.shape[0]
 
     # Save file every day on last obs
     if new_day[idx]:
-        f_name = next_row.time.strftime('graphs/%Y%m%d')+'.pickle'
+        f_name = next_row.time.strftime('data/processed/Graphs/%Y%m%d')+'.pickle'
         with open(f_name, 'wb') as handle:
             pickle.dump(Graph_dict, handle, pickle.HIGHEST_PROTOCOL)
 

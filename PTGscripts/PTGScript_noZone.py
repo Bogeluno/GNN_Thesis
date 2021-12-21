@@ -209,7 +209,7 @@ val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=True, drop_last
 test_loader = DataLoader(test_data, batch_size=1, shuffle=False, drop_last=False, num_workers = 4)
 del train_data, val_data, test_data
 print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
-'''
+
 class GCN(torch.nn.Module):
     def __init__(self):
         super().__init__()
@@ -798,7 +798,7 @@ test_targest = [obs.y[-1].numpy().item() for obs in test_loader.dataset]
 print(f'Test score: {r2_score(test_targest,test_preds)}')
 print(f'Time Spent: {time.time()-t}')
 
-'''
+
 #########################
 print('\n')
 print('\n')

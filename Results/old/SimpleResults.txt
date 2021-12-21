@@ -1,0 +1,174 @@
+----------------------------------------------
+---NO ZONE AND LOCAL INFO ONLY
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.09021209734568458
+R2 of test: 0.09274190419741979
+----------------------------------------------
+
+Fitting 5 folds for each of 60 candidates, totalling 300 fits
+alpha = 0.001, l1-ratio: 0.001
+
+ElasticNet()
+R2 of training: 0.09021122796982228
+R2 of test: 0.09273632156081946
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 30
+
+RandomForestRegressor()
+R2 of training: 0.19112267533343885
+R2 of test: 0.10955353808046386
+----------------------------------------------
+
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+n_neighbors = 200 weights = uniform
+
+KNeighborsRegressor()
+R2 of training: 0.11815789783736441
+R2 of test: 0.11157669279587945
+----------------------------------------------
+
+Time spent: 305.59805727005005
+
+
+
+----------------------------------------------
+--ADD NON-LOCAL INFO
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.11427743885334984
+R2 of test: 0.11687729262736946
+----------------------------------------------
+
+Fitting 5 folds for each of 40 candidates, totalling 200 fits
+alpha = 0.001, l1-ratio: 0.2
+
+ElasticNet()
+R2 of training: 0.11427627307720145
+R2 of test: 0.11687352243712468
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 30
+
+RandomForestRegressor()
+R2 of training: 0.26750864836632204
+R2 of test: 0.1677605507051778
+----------------------------------------------
+
+Fitting 5 folds for each of 6 candidates, totalling 30 fits
+n_neighbors = 100 weights = distance
+
+KNeighborsRegressor()
+R2 of training: 1.0
+R2 of test: 0.14718310250702793
+----------------------------------------------
+
+Time spent: 790.5743534564972
+
+
+
+----------------------------------------------
+--ADD WEATHER
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.11582786470992024
+R2 of test: 0.1178454417275765
+----------------------------------------------
+
+Fitting 5 folds for each of 60 candidates, totalling 300 fits
+alpha = 0.001, l1-ratio: 1
+
+ElasticNet()
+R2 of training: 0.1158249818241901
+R2 of test: 0.117837362398447
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 20
+
+RandomForestRegressor()
+R2 of training: 0.33307675685435356
+R2 of test: 0.176560658526836
+----------------------------------------------
+
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+n_neighbors = 100 weights = distance
+
+KNeighborsRegressor()
+R2 of training: 0.9999999999973919
+R2 of test: 0.13872385789402875
+----------------------------------------------
+
+Time spent: 2816.3332135677338
+
+
+
+----------------------------------------------
+--ADD ZONES
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.20141222908448375
+R2 of test: 0.19559637549564668
+----------------------------------------------
+
+Fitting 5 folds for each of 40 candidates, totalling 200 fits
+alpha = 0.001, l1-ratio: 1
+
+ElasticNet()
+R2 of training: 0.19602169861974217
+R2 of test: 0.19221167947155504
+----------------------------------------------
+
+Time spent: 2916.446288585663
+
+
+
+----------------------------------------------
+--ENCODE ZONES
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression(fit_intercept=False)
+R2 of training: 0.1940413311467699
+R2 of test: 0.1902019020939646
+----------------------------------------------
+
+Fitting 5 folds for each of 30 candidates, totalling 150 fits
+alpha = 0.001, l1-ratio: 0.1
+
+ElasticNet()
+R2 of training: 0.1940399907420023
+R2 of test: 0.19020800631208024
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 10
+
+RandomForestRegressor()
+R2 of training: 0.5109216288919278
+R2 of test: 0.25399234023880446
+----------------------------------------------
+
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+n_neighbors = 50 weights = distance
+
+KNeighborsRegressor()
+R2 of training: 0.999999999999433
+R2 of test: 0.20639345203070614
+----------------------------------------------
+
+Time spent: 5002.624898195267
+
+
+
