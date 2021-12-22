@@ -1,0 +1,468 @@
+----------------------------------------------
+---NO ZONES
+----------------------------------------------
+LinearRegression()
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+
+R2 of training: 0.09392543978184775
+R2 of test: 0.09356678050454814
+              precision    recall  f1-score   support
+
+       Under       0.86      1.00      0.92     26743
+        Over       0.00      0.00      0.00      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.43      0.50      0.46     31145
+weighted avg       0.74      0.86      0.79     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 60 candidates, totalling 240 fits
+ElasticNet()
+alpha = 0.002, l1-ratio: 1
+
+R2 of training: 0.09390604734286512
+R2 of test: 0.09354715117624701
+              precision    recall  f1-score   support
+
+       Under       0.86      1.00      0.92     26743
+        Over       0.00      0.00      0.00      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.43      0.50      0.46     31145
+weighted avg       0.74      0.86      0.79     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 20 candidates, totalling 80 fits
+RandomForestRegressor()
+n_estimators = 300 min_samples_leaf = 30
+
+R2 of training: 0.21847755565982085
+R2 of test: 0.12258974710038317
+              precision    recall  f1-score   support
+
+       Under       0.87      0.99      0.92     26743
+        Over       0.57      0.06      0.11      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.72      0.53      0.52     31145
+weighted avg       0.82      0.86      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 8 candidates, totalling 32 fits
+KNeighborsRegressor()
+n_neighbors = 300 weights = distance
+
+R2 of training: 1.0
+R2 of test: 0.11075017743187876
+              precision    recall  f1-score   support
+
+       Under       0.86      1.00      0.92     26743
+        Over       0.52      0.01      0.01      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.69      0.50      0.47     31145
+weighted avg       0.81      0.86      0.79     31145
+
+----------------------------------------------
+
+
+Time spent: 487.7939245700836
+
+
+
+----------------------------------------------
+---ADD ZONES
+----------------------------------------------
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+LinearRegression()
+
+R2 of training: 0.19891781890553017
+R2 of test: 0.19753860444248528
+              precision    recall  f1-score   support
+
+       Under       0.87      0.96      0.91     26743
+        Over       0.38      0.15      0.21      4402
+
+    accuracy                           0.84     31145
+   macro avg       0.62      0.55      0.56     31145
+weighted avg       0.80      0.84      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 60 candidates, totalling 240 fits
+ElasticNet()
+alpha = 0.001, l1-ratio: 1
+
+R2 of training: 0.19337105842231217
+R2 of test: 0.19103683511002134
+              precision    recall  f1-score   support
+
+       Under       0.87      0.97      0.92     26743
+        Over       0.40      0.11      0.17      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.63      0.54      0.55     31145
+weighted avg       0.80      0.85      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 20 candidates, totalling 80 fits
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 5
+
+R2 of training: 0.5355366894437164
+R2 of test: 0.2018834237267072
+              precision    recall  f1-score   support
+
+       Under       0.88      0.96      0.92     26743
+        Over       0.46      0.20      0.28      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.67      0.58      0.60     31145
+weighted avg       0.82      0.85      0.83     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 8 candidates, totalling 32 fits
+KNeighborsRegressor()
+n_neighbors = 50 weights = distance
+
+R2 of training: 0.9999999999990686
+R2 of test: 0.2012580728402018
+              precision    recall  f1-score   support
+
+       Under       0.88      0.96      0.92     26743
+        Over       0.41      0.17      0.24      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.65      0.56      0.58     31145
+weighted avg       0.81      0.85      0.82     31145
+
+----------------------------------------------
+
+
+Time spent: 11490.301198482513
+
+
+
+----------------------------------------------
+---ADD ENCODED ZONES
+----------------------------------------------
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+LinearRegression()
+
+R2 of training: 0.19187497575498336
+R2 of test: 0.18921691183998923
+              precision    recall  f1-score   support
+
+       Under       0.87      0.96      0.91     26743
+        Over       0.38      0.14      0.21      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.63      0.55      0.56     31145
+weighted avg       0.80      0.85      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 60 candidates, totalling 240 fits
+ElasticNet()
+alpha = 0.002, l1-ratio: 1
+
+R2 of training: 0.19185281605962046
+R2 of test: 0.1891757682215539
+              precision    recall  f1-score   support
+
+       Under       0.87      0.96      0.91     26743
+        Over       0.38      0.14      0.20      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.63      0.55      0.56     31145
+weighted avg       0.80      0.85      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 20 candidates, totalling 80 fits
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 30
+
+R2 of training: 0.33517172998641276
+R2 of test: 0.24450374803736785
+              precision    recall  f1-score   support
+
+       Under       0.88      0.96      0.92     26743
+        Over       0.45      0.21      0.29      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.67      0.58      0.60     31145
+weighted avg       0.82      0.85      0.83     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 8 candidates, totalling 32 fits
+KNeighborsRegressor()
+n_neighbors = 100 weights = distance
+
+R2 of training: 1.0
+R2 of test: 0.2052161542728862
+              precision    recall  f1-score   support
+
+       Under       0.87      0.97      0.92     26743
+        Over       0.42      0.14      0.21      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.65      0.55      0.56     31145
+weighted avg       0.81      0.85      0.82     31145
+
+----------------------------------------------
+
+
+Time spent: 12022.859262943268
+
+
+
+----------------------------------------------
+---ADD WEATHER AND DIST
+----------------------------------------------
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+LinearRegression()
+
+R2 of training: 0.11625363204115569
+R2 of test: 0.11605347811533517
+              precision    recall  f1-score   support
+
+       Under       0.86      0.99      0.92     26743
+        Over       0.32      0.03      0.05      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.59      0.51      0.49     31145
+weighted avg       0.78      0.85      0.80     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 60 candidates, totalling 240 fits
+ElasticNet()
+alpha = 0.002, l1-ratio: 1
+
+R2 of training: 0.11617831303065829
+R2 of test: 0.11593934792616156
+              precision    recall  f1-score   support
+
+       Under       0.86      0.99      0.92     26743
+        Over       0.32      0.03      0.05      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.59      0.51      0.49     31145
+weighted avg       0.78      0.85      0.80     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 20 candidates, totalling 80 fits
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 20
+
+R2 of training: 0.3338939388797151
+R2 of test: 0.17392878412377377
+              precision    recall  f1-score   support
+
+       Under       0.87      0.98      0.92     26743
+        Over       0.53      0.12      0.20      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.70      0.55      0.56     31145
+weighted avg       0.82      0.86      0.82     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 8 candidates, totalling 32 fits
+KNeighborsRegressor()
+n_neighbors = 100 weights = distance
+
+R2 of training: 0.9999999999820384
+R2 of test: 0.12404920635803973
+              precision    recall  f1-score   support
+
+       Under       0.86      1.00      0.92     26743
+        Over       0.40      0.01      0.01      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.63      0.50      0.47     31145
+weighted avg       0.79      0.86      0.80     31145
+
+----------------------------------------------
+
+
+Time spent: 14020.910423278809
+
+
+
+----------------------------------------------
+---WITH ALL
+----------------------------------------------
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+LinearRegression()
+
+R2 of training: 0.20053610474961614
+R2 of test: 0.19948578182512755
+              precision    recall  f1-score   support
+
+       Under       0.87      0.96      0.91     26743
+        Over       0.38      0.15      0.21      4402
+
+    accuracy                           0.84     31145
+   macro avg       0.62      0.55      0.56     31145
+weighted avg       0.80      0.84      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 60 candidates, totalling 240 fits
+ElasticNet()
+alpha = 0.001, l1-ratio: 1
+
+R2 of training: 0.1950470645063509
+R2 of test: 0.19265675507378688
+              precision    recall  f1-score   support
+
+       Under       0.87      0.97      0.92     26743
+        Over       0.39      0.11      0.18      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.63      0.54      0.55     31145
+weighted avg       0.80      0.85      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 20 candidates, totalling 80 fits
+RandomForestRegressor()
+n_estimators = 400 min_samples_leaf = 5
+
+R2 of training: 0.6021142921584193
+R2 of test: 0.22487041139749908
+              precision    recall  f1-score   support
+
+       Under       0.88      0.97      0.92     26743
+        Over       0.50      0.21      0.30      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.69      0.59      0.61     31145
+weighted avg       0.83      0.86      0.83     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 8 candidates, totalling 32 fits
+KNeighborsRegressor()
+n_neighbors = 50 weights = distance
+
+R2 of training: 0.9999999999995194
+R2 of test: 0.2045249865707044
+              precision    recall  f1-score   support
+
+       Under       0.87      0.97      0.92     26743
+        Over       0.42      0.15      0.22      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.65      0.56      0.57     31145
+weighted avg       0.81      0.85      0.82     31145
+
+----------------------------------------------
+
+
+Time spent: 20274.105094194412
+
+
+
+----------------------------------------------
+---WITH ALL AND ENCODED
+----------------------------------------------
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+LinearRegression()
+
+R2 of training: 0.1933137248212643
+R2 of test: 0.1908761229920698
+              precision    recall  f1-score   support
+
+       Under       0.87      0.96      0.91     26743
+        Over       0.38      0.14      0.21      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.63      0.55      0.56     31145
+weighted avg       0.80      0.85      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 60 candidates, totalling 240 fits
+ElasticNet()
+alpha = 0.002, l1-ratio: 1
+
+R2 of training: 0.1932364154496391
+R2 of test: 0.1907562765454477
+              precision    recall  f1-score   support
+
+       Under       0.87      0.96      0.91     26743
+        Over       0.38      0.14      0.21      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.63      0.55      0.56     31145
+weighted avg       0.80      0.85      0.81     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 20 candidates, totalling 80 fits
+RandomForestRegressor()
+n_estimators = 400 min_samples_leaf = 10
+
+R2 of training: 0.5114256168270219
+R2 of test: 0.25810196142701314
+              precision    recall  f1-score   support
+
+       Under       0.88      0.96      0.92     26743
+        Over       0.47      0.23      0.31      4402
+
+    accuracy                           0.86     31145
+   macro avg       0.68      0.60      0.62     31145
+weighted avg       0.83      0.86      0.83     31145
+
+----------------------------------------------
+
+
+Fitting 4 folds for each of 8 candidates, totalling 32 fits
+KNeighborsRegressor()
+n_neighbors = 100 weights = distance
+
+R2 of training: 0.9999999999780066
+R2 of test: 0.2033652059374197
+              precision    recall  f1-score   support
+
+       Under       0.87      0.97      0.92     26743
+        Over       0.41      0.13      0.20      4402
+
+    accuracy                           0.85     31145
+   macro avg       0.64      0.55      0.56     31145
+weighted avg       0.81      0.85      0.82     31145
+
+----------------------------------------------
+
+
+Time spent: 22240.362508058548
+
+
+

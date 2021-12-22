@@ -12,21 +12,21 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 import time
 
-df_full = pd.read_csv('data/processed/SimpleNNData.csv', index_col=0, parse_dates = [1])
+df_full = pd.read_csv('Data/SimpleNNData.csv', index_col=0, parse_dates = [1])
 y = df_full.time_to_reservation
 
 # Load weather
-Weather_Scale = pd.read_csv('data/processed/MinMaxWeather.csv', index_col=0)
+Weather_Scale = pd.read_csv('Data/MinMaxWeather.csv', index_col=0)
 weather_var = list(Weather_Scale.index)
 
 # Load slicing
-with open("data/processed/Sample_CC", "rb") as fp: 
+with open("Data/Sample_CC", "rb") as fp: 
     cc = pickle.load(fp)
 train_idx = np.concatenate(cc[:2])
 test_idx = cc[2]
 
 # Set up print
-sys.stdout = open("SimpleResults.txt", "w")
+sys.stdout = open("Results/SimpleResults.txt", "w")
 
 def cv(pipe, parameters, X_train, y_train, cf = 4):    
     """
@@ -64,9 +64,10 @@ def score_model(model, X_train, X_test, y_train, y_test, df_clas = df_clas):
     print('')
     print(f'R2 of training: {r2_score(y_train,model.predict(X_train))}')
     print(f'R2 of test: {r2_score(y_test,preds)}')
-    print('----------------------------------------------')
     df_clas['Preds'] = preds
     print(classification_report(df_clas.time_to_reservation > df_clas.Cut, df_clas.Preds > df_clas.Cut, target_names = ['Under','Over'], zero_division = 0))
+    print('----------------------------------------------')
+    print('')
     print('')
 
 time_start = time.time()
@@ -87,12 +88,12 @@ y_test = y.iloc[test_idx]
 
 ### LM Model
 LM_model = LinearRegression(fit_intercept = True)
-
+print(LM_model)
 parameters = {}
 
-LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 5)
+LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 4)
 
-print(LM_cv.estimator)
+
 score_model(LM_cv, X_train, X_test, y_train, y_test)
 
 ### Elastic Net Model
@@ -103,7 +104,7 @@ parameters = {
     'l1_ratio': [0.001,0.01,0.1,0.5,0.9,1]
 }
 
-elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 5)
+elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 4)
 
 best_idx = elastic_net_cv.cv_results_['mean_test_score'].argmax()
 alpha = elastic_net_cv.cv_results_['param_alpha'].data[best_idx]
@@ -118,11 +119,11 @@ score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
 RF_model = RandomForestRegressor()
 
 parameters = {
-    'n_estimators': [100,200,300,400],
-    'min_samples_leaf': [10,20,30]
+    'n_estimators': [100,200,300,400,500],
+    'min_samples_leaf': [5,10,20,30]
 }
 
-RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 5)
+RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 4)
 
 best_idx = RF_cv.cv_results_['mean_test_score'].argmax()
 n_estimators = RF_cv.cv_results_['param_n_estimators'].data[best_idx]
@@ -142,7 +143,7 @@ parameters = {
 }
 
 
-KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 5)
+KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 4)
 
 
 best_idx = KNN_cv.cv_results_['mean_test_score'].argmax()
@@ -176,7 +177,7 @@ LM_model = LinearRegression(fit_intercept = True)
 
 parameters = {}
 
-LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 5)
+LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 4)
 
 print(LM_cv.estimator)
 score_model(LM_cv, X_train, X_test, y_train, y_test)
@@ -189,7 +190,7 @@ parameters = {
     'l1_ratio': [0.001,0.01,0.1,0.5,0.9,1]
 }
 
-elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 5)
+elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 4)
 
 best_idx = elastic_net_cv.cv_results_['mean_test_score'].argmax()
 alpha = elastic_net_cv.cv_results_['param_alpha'].data[best_idx]
@@ -204,11 +205,11 @@ score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
 RF_model = RandomForestRegressor()
 
 parameters = {
-    'n_estimators': [100,200,300,400],
-    'min_samples_leaf': [10,20,30]
+    'n_estimators': [100,200,300,400,500],
+    'min_samples_leaf': [5,10,20,30]
 }
 
-RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 5)
+RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 4)
 
 best_idx = RF_cv.cv_results_['mean_test_score'].argmax()
 n_estimators = RF_cv.cv_results_['param_n_estimators'].data[best_idx]
@@ -228,7 +229,103 @@ parameters = {
 }
 
 
-KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 5)
+KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 4)
+
+
+best_idx = KNN_cv.cv_results_['mean_test_score'].argmax()
+n_neighbors = KNN_cv.cv_results_['param_n_neighbors'].data[best_idx]
+weights = KNN_cv.cv_results_['param_weights'].data[best_idx]
+
+print(KNN_cv.estimator)
+print(f'n_neighbors = {n_neighbors}', f'weights = {weights}')
+score_model(KNN_cv, X_train, X_test, y_train, y_test)
+
+
+
+print(f'Time spent: {time.time()-time_start}')
+print('\n\n')
+
+
+##################################
+### ADD ENCODED ZONES
+##################################
+print('----------------------------------------------')
+print('---ADD ENCODED ZONES')
+print('----------------------------------------------')
+
+# Prep data
+df = df_full.drop(columns =  weather_var + ['dist_to_station'])
+X_train = df.iloc[train_idx]
+y_train = y.iloc[train_idx]
+X_test = df.iloc[test_idx]
+y_test = y.iloc[test_idx]
+
+# Encode zones
+Mean_Zone_Times = dict(pd.DataFrame({'Zone': X_train.filter(regex = 'lz').idxmax(axis = 1).values, 'Time':y_train.values}).groupby('Zone').mean().squeeze())
+
+X_train['Zone_E'] = X_train.filter(regex = 'lz').idxmax(1).map(Mean_Zone_Times)
+X_test['Zone_E'] = X_test.filter(regex = 'lz').idxmax(1).map(Mean_Zone_Times)
+X_train.drop(columns = X_train.filter(regex = 'lz'), inplace = True)
+X_test.drop(columns =  X_test.filter(regex = 'lz'), inplace = True)
+
+### LM Model
+LM_model = LinearRegression(fit_intercept = True)
+
+parameters = {}
+
+LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 4)
+
+print(LM_cv.estimator)
+score_model(LM_cv, X_train, X_test, y_train, y_test)
+
+### Elastic Net Model
+elastic_net_model = ElasticNet(fit_intercept = True)
+
+parameters = {
+    'alpha': np.logspace(-3,-0.5,10),
+    'l1_ratio': [0.001,0.01,0.1,0.5,0.9,1]
+}
+
+elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = elastic_net_cv.cv_results_['mean_test_score'].argmax()
+alpha = elastic_net_cv.cv_results_['param_alpha'].data[best_idx]
+l1_ratio = elastic_net_cv.cv_results_['param_l1_ratio'].data[best_idx]
+
+print(elastic_net_cv.estimator)
+print(f'alpha = {round(alpha, 3)}, l1-ratio: {round(l1_ratio,3)}')
+score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
+
+
+### RF 
+RF_model = RandomForestRegressor()
+
+parameters = {
+    'n_estimators': [100,200,300,400,500],
+    'min_samples_leaf': [5,10,20,30]
+}
+
+RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = RF_cv.cv_results_['mean_test_score'].argmax()
+n_estimators = RF_cv.cv_results_['param_n_estimators'].data[best_idx]
+min_samples_leaf = RF_cv.cv_results_['param_min_samples_leaf'].data[best_idx]
+
+print(RF_cv.estimator)
+print(f'n_estimators = {n_estimators}', f'min_samples_leaf = {min_samples_leaf}')
+score_model(RF_cv, X_train, X_test, y_train, y_test)
+
+
+### KNN
+KNN_model = KNeighborsRegressor()
+
+parameters = {
+    'n_neighbors': [50,100,200,300],
+    'weights': ['uniform', 'distance']
+}
+
+
+KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 4)
 
 
 best_idx = KNN_cv.cv_results_['mean_test_score'].argmax()
@@ -256,7 +353,73 @@ y_train = y.iloc[train_idx]
 X_test = df.iloc[test_idx]
 y_test = y.iloc[test_idx]
 
+### LM Model
+LM_model = LinearRegression(fit_intercept = True)
 
+parameters = {}
+
+LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 4)
+
+print(LM_cv.estimator)
+score_model(LM_cv, X_train, X_test, y_train, y_test)
+
+### Elastic Net Model
+elastic_net_model = ElasticNet(fit_intercept = True)
+
+parameters = {
+    'alpha': np.logspace(-3,-0.5,10),
+    'l1_ratio': [0.001,0.01,0.1,0.5,0.9,1]
+}
+
+elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = elastic_net_cv.cv_results_['mean_test_score'].argmax()
+alpha = elastic_net_cv.cv_results_['param_alpha'].data[best_idx]
+l1_ratio = elastic_net_cv.cv_results_['param_l1_ratio'].data[best_idx]
+
+print(elastic_net_cv.estimator)
+print(f'alpha = {round(alpha, 3)}, l1-ratio: {round(l1_ratio,3)}')
+score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
+
+
+### RF 
+RF_model = RandomForestRegressor()
+
+parameters = {
+    'n_estimators': [100,200,300,400,500],
+    'min_samples_leaf': [5,10,20,30]
+}
+
+RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = RF_cv.cv_results_['mean_test_score'].argmax()
+n_estimators = RF_cv.cv_results_['param_n_estimators'].data[best_idx]
+min_samples_leaf = RF_cv.cv_results_['param_min_samples_leaf'].data[best_idx]
+
+print(RF_cv.estimator)
+print(f'n_estimators = {n_estimators}', f'min_samples_leaf = {min_samples_leaf}')
+score_model(RF_cv, X_train, X_test, y_train, y_test)
+
+
+### KNN
+KNN_model = KNeighborsRegressor()
+
+parameters = {
+    'n_neighbors': [50,100,200,300],
+    'weights': ['uniform', 'distance']
+}
+
+
+KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 4)
+
+
+best_idx = KNN_cv.cv_results_['mean_test_score'].argmax()
+n_neighbors = KNN_cv.cv_results_['param_n_neighbors'].data[best_idx]
+weights = KNN_cv.cv_results_['param_weights'].data[best_idx]
+
+print(KNN_cv.estimator)
+print(f'n_neighbors = {n_neighbors}', f'weights = {weights}')
+score_model(KNN_cv, X_train, X_test, y_train, y_test)
 
 
 print(f'Time spent: {time.time()-time_start}')
@@ -274,7 +437,172 @@ y_train = y.iloc[train_idx]
 X_test = df.iloc[test_idx]
 y_test = y.iloc[test_idx]
 
+### LM Model
+LM_model = LinearRegression(fit_intercept = True)
+
+parameters = {}
+
+LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 4)
+
+print(LM_cv.estimator)
+score_model(LM_cv, X_train, X_test, y_train, y_test)
+
+### Elastic Net Model
+elastic_net_model = ElasticNet(fit_intercept = True)
+
+parameters = {
+    'alpha': np.logspace(-3,-0.5,10),
+    'l1_ratio': [0.001,0.01,0.1,0.5,0.9,1]
+}
+
+elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = elastic_net_cv.cv_results_['mean_test_score'].argmax()
+alpha = elastic_net_cv.cv_results_['param_alpha'].data[best_idx]
+l1_ratio = elastic_net_cv.cv_results_['param_l1_ratio'].data[best_idx]
+
+print(elastic_net_cv.estimator)
+print(f'alpha = {round(alpha, 3)}, l1-ratio: {round(l1_ratio,3)}')
+score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
+
+
+### RF 
+RF_model = RandomForestRegressor()
+
+parameters = {
+    'n_estimators': [100,200,300,400,500],
+    'min_samples_leaf': [5,10,20,30]
+}
+
+RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = RF_cv.cv_results_['mean_test_score'].argmax()
+n_estimators = RF_cv.cv_results_['param_n_estimators'].data[best_idx]
+min_samples_leaf = RF_cv.cv_results_['param_min_samples_leaf'].data[best_idx]
+
+print(RF_cv.estimator)
+print(f'n_estimators = {n_estimators}', f'min_samples_leaf = {min_samples_leaf}')
+score_model(RF_cv, X_train, X_test, y_train, y_test)
+
+
+### KNN
+KNN_model = KNeighborsRegressor()
+
+parameters = {
+    'n_neighbors': [50,100,200,300],
+    'weights': ['uniform', 'distance']
+}
+
+
+KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 4)
+
+
+best_idx = KNN_cv.cv_results_['mean_test_score'].argmax()
+n_neighbors = KNN_cv.cv_results_['param_n_neighbors'].data[best_idx]
+weights = KNN_cv.cv_results_['param_weights'].data[best_idx]
+
+print(KNN_cv.estimator)
+print(f'n_neighbors = {n_neighbors}', f'weights = {weights}')
+score_model(KNN_cv, X_train, X_test, y_train, y_test)
+
 
 print(f'Time spent: {time.time()-time_start}')
 print('\n\n')
+
+##################################
+### With all and encoded
+##################################
+print('----------------------------------------------')
+print('---WITH ALL AND ENCODED')
+print('----------------------------------------------')
+# Prep data
+df = df_full.copy()
+X_train = df.iloc[train_idx]
+y_train = y.iloc[train_idx]
+X_test = df.iloc[test_idx]
+y_test = y.iloc[test_idx]
+
+# Encode zones
+Mean_Zone_Times = dict(pd.DataFrame({'Zone': X_train.filter(regex = 'lz').idxmax(axis = 1).values, 'Time':y_train.values}).groupby('Zone').mean().squeeze())
+
+X_train['Zone_E'] = X_train.filter(regex = 'lz').idxmax(1).map(Mean_Zone_Times)
+X_test['Zone_E'] = X_test.filter(regex = 'lz').idxmax(1).map(Mean_Zone_Times)
+X_train.drop(columns = X_train.filter(regex = 'lz'), inplace = True)
+X_test.drop(columns =  X_test.filter(regex = 'lz'), inplace = True)
+
+### LM Model
+LM_model = LinearRegression(fit_intercept = True)
+
+parameters = {}
+
+LM_cv = cv(LM_model, parameters, X_train, y_train, cf = 4)
+
+print(LM_cv.estimator)
+score_model(LM_cv, X_train, X_test, y_train, y_test)
+
+### Elastic Net Model
+elastic_net_model = ElasticNet(fit_intercept = True)
+
+parameters = {
+    'alpha': np.logspace(-3,-0.5,10),
+    'l1_ratio': [0.001,0.01,0.1,0.5,0.9,1]
+}
+
+elastic_net_cv = cv(elastic_net_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = elastic_net_cv.cv_results_['mean_test_score'].argmax()
+alpha = elastic_net_cv.cv_results_['param_alpha'].data[best_idx]
+l1_ratio = elastic_net_cv.cv_results_['param_l1_ratio'].data[best_idx]
+
+print(elastic_net_cv.estimator)
+print(f'alpha = {round(alpha, 3)}, l1-ratio: {round(l1_ratio,3)}')
+score_model(elastic_net_cv, X_train, X_test, y_train, y_test)
+
+
+### RF 
+RF_model = RandomForestRegressor()
+
+parameters = {
+    'n_estimators': [100,200,300,400,500],
+    'min_samples_leaf': [5,10,20,30]
+}
+
+RF_cv = cv(RF_model, parameters, X_train, y_train, cf = 4)
+
+best_idx = RF_cv.cv_results_['mean_test_score'].argmax()
+n_estimators = RF_cv.cv_results_['param_n_estimators'].data[best_idx]
+min_samples_leaf = RF_cv.cv_results_['param_min_samples_leaf'].data[best_idx]
+
+print(RF_cv.estimator)
+print(f'n_estimators = {n_estimators}', f'min_samples_leaf = {min_samples_leaf}')
+score_model(RF_cv, X_train, X_test, y_train, y_test)
+
+
+### KNN
+KNN_model = KNeighborsRegressor()
+
+parameters = {
+    'n_neighbors': [50,100,200,300],
+    'weights': ['uniform', 'distance']
+}
+
+
+KNN_cv = cv(KNN_model, parameters, X_train, y_train, cf = 4)
+
+
+best_idx = KNN_cv.cv_results_['mean_test_score'].argmax()
+n_neighbors = KNN_cv.cv_results_['param_n_neighbors'].data[best_idx]
+weights = KNN_cv.cv_results_['param_weights'].data[best_idx]
+
+print(KNN_cv.estimator)
+print(f'n_neighbors = {n_neighbors}', f'weights = {weights}')
+score_model(KNN_cv, X_train, X_test, y_train, y_test)
+
+
+print(f'Time spent: {time.time()-time_start}')
+print('\n\n')
+
+##################################
+### End and exit stdout
+##################################
 sys.stdout.close()

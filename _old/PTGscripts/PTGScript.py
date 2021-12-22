@@ -17,6 +17,7 @@ from torch_scatter import scatter
 import subprocess
 import time
 
+
 sys.stdout = open("PTG.txt", "w")
 
 class EarlyStopping:
@@ -76,7 +77,7 @@ def r2_loss(output, target):
     return -r2
 
 no_days = int(sys.argv[1])
-batch_size = int(sys.argv[2])
+batch_size = 512
 
 if no_days > 60:
     sys.exit('No days can not be larger than 60')
@@ -252,10 +253,9 @@ print('Start learning')
 
 optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
 
-#print(subprocess.run(['nvidia-smi'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
 
 # Set number of epochs
-num_epochs = int(sys.argv[3])
+num_epochs = int(sys.argv[2])
 
 # Set up lists for loss/R2
 train_r2, train_loss = [], []
