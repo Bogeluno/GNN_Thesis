@@ -1,0 +1,133 @@
+              total        used        free      shared  buff/cache   available
+Mem:         128678       28721       67612         256       32345       98480
+Swap:          2047         749        1298
+
+Time spent: 77.40730476379395
+GCN(
+  (convM): Sequential(
+    (0): GCNConv(10, 64)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.25, inplace=False)
+  )
+  (convA): Sequential(
+    (0): GCNConv(10, 64)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (linS): Sequential(
+    (0): Linear(10, 64, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (seq): Sequential(
+    (0): Linear(192, 64, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(64, 1, bias=True)
+  )
+) 14529
+Start learning
+Epoch  1: Train Loss 0.419976, Valid Loss 0.211603, Train R2 -0.236290, Valid R2 -0.201109
+Epoch  2: Train Loss 0.107494, Valid Loss -0.051600, Train R2 0.030677, Valid R2 0.051229
+Epoch  3: Train Loss -0.050421, Valid Loss -0.094955, Train R2 0.071750, Valid R2 0.098565
+-----------------------------------
+Best val R2: 0.09856452065783972
+Test score: 0.09945552849893702
+              precision    recall  f1-score   support
+
+       Under       0.88      0.93      0.90      1793
+        Over       0.20      0.11      0.14       267
+
+    accuracy                           0.83      2060
+   macro avg       0.54      0.52      0.52      2060
+weighted avg       0.79      0.83      0.81      2060
+
+Time Spent: 107.83110809326172
+
+
+
+
+GCN(
+  (convM): Sequential(
+    (0): GCNConv(10, 32)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (convA): Sequential(
+    (0): GCNConv(10, 32)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (linS): Sequential(
+    (0): Linear(10, 32, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (seq): Sequential(
+    (0): Linear(96, 48, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(48, 1, bias=True)
+  )
+) 5761
+Start learning
+Epoch  1: Train Loss 0.427091, Valid Loss 0.258097, Train R2 -0.291451, Valid R2 -0.252242
+Epoch  2: Train Loss 0.188110, Valid Loss 0.038609, Train R2 -0.063263, Valid R2 -0.037955
+Epoch  3: Train Loss -0.003395, Valid Loss -0.084036, Train R2 0.061503, Valid R2 0.087920
+-----------------------------------
+Best val R2: 0.0879199061696555
+Test score: 0.08374829622149826
+              precision    recall  f1-score   support
+
+       Under       0.87      0.97      0.92      1793
+        Over       0.23      0.05      0.09       267
+
+    accuracy                           0.85      2060
+   macro avg       0.55      0.51      0.50      2060
+weighted avg       0.79      0.85      0.81      2060
+
+Time Spent: 129.68858075141907
+
+
+
+
+GCN(
+  (convM): Sequential(
+    (0): GCNConv(10, 12)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (convA): Sequential(
+    (0): GCNConv(10, 12)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (linS): Sequential(
+    (0): Linear(10, 12, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (seq): Sequential(
+    (0): Linear(36, 16, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+    (3): Linear(16, 1, bias=True)
+  )
+) 1005
+Start learning
+Epoch  1: Train Loss 0.412997, Valid Loss 0.318280, Train R2 -0.362952, Valid R2 -0.316387
+Epoch  2: Train Loss 0.320292, Valid Loss 0.227893, Train R2 -0.262074, Valid R2 -0.224589
+Epoch  3: Train Loss 0.210836, Valid Loss 0.117688, Train R2 -0.146671, Valid R2 -0.114661
+-----------------------------------
+Best val R2: -0.1146609029850505
+Test score: -0.13095647028240665
+              precision    recall  f1-score   support
+
+       Under       0.87      1.00      0.93      1793
+        Over       0.00      0.00      0.00       267
+
+    accuracy                           0.87      2060
+   macro avg       0.44      0.50      0.47      2060
+weighted avg       0.76      0.87      0.81      2060
+
+Time Spent: 149.14911270141602

@@ -90,8 +90,8 @@ with open("Data/Sample_CC", "rb") as fp:
     cc = pickle.load(fp)
 
 # For classification
-df_full = pd.read_csv('Data/SimpleNNData.csv', index_col=0, parse_dates = [1])
-Clas_Coef = dict(pd.concat([df_full.time.dt.hour.iloc[cc[0]],df_full.time_to_reservation.iloc[cc[0]]], axis = 1).groupby('time')['time_to_reservation'].mean()*2)
+df_full = pd.read_csv('Data/SimpleNNData.csv', index_col=0, parse_dates = [1]).sort_values(by = 'time')
+Clas_Coef = dict(pd.concat([df_full.time.dt.hour.iloc[np.concatenate(cc[:2])],df_full.time_to_reservation.iloc[np.concatenate(cc[:2])]], axis = 1).groupby('time')['time_to_reservation'].mean()*2)
 df_clas = pd.concat([df_full.time.dt.hour.iloc[cc[2]],df_full.time_to_reservation.iloc[cc[2]]], axis = 1)
 df_clas['Cut'] = df_clas.time.map(dict(Clas_Coef))
 df_clas = df_clas.iloc[:sum([len(x[2]) for x in nc[:(no_days+1)]])]
@@ -473,6 +473,146 @@ print(f'Time Spent: {time.time()-t}')
 
 print('\n')
 print('\n')
+
+################################################
+################ Small
+################################################
+class GCN(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.convM = Sequential('x, edge_index, edge_weight', [
+        (GCNConv(265,12, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        nn.ReLU(inplace = True),
+        (nn.Dropout(0.1), 'x -> x')
+        ])
+
+        self.convA = Sequential('x, edge_index, edge_weight', [
+        (GCNConv(265,12, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        nn.ReLU(inplace = True),
+        (nn.Dropout(0.1), 'x -> x')
+        ])
+
+        self.linS = Sequential('x', [
+        (Linear(265,12),'x -> x'),
+        nn.ReLU(inplace = True),
+        (nn.Dropout(0.1), 'x -> x')
+        ])
+
+        self.seq = Sequential('x', [
+            (Linear(36,16),'x -> x'),
+            nn.ReLU(inplace = True),
+            (nn.Dropout(0.1), 'x -> x'),
+            (Linear(16,1),'x -> x')
+        ])
+
+
+    def forward(self, data):
+        x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
+
+        xConvM = self.convM(x, edge_index, edge_weight)
+        xConvA = self.convA(x, edge_index, edge_weight)
+        xLin = self.linS(x)
+
+        x = torch.cat([xConvM,xConvA,xLin], axis = 1)
+
+        x = self.seq(x)
+
+        return x.squeeze()
+
+GNN = GCN().to(device)
+print(GNN, sum(p.numel() for p in GNN.parameters()))
+print('Start learning')
+
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+
+
+# Set number of epochs
+num_epochs = int(sys.argv[2])
+
+# Set up lists for loss/R2
+train_r2, train_loss = [], []
+valid_r2, valid_loss = [], []
+cur_loss = 0
+train_losses = []
+val_losses = []
+
+early_stopping = EarlyStopping(patience=20, verbose=False, path = 'Checkpoints/'+name+'.pt')
+
+no_train = len(train_loader)
+no_val = len(val_loader)
+
+for epoch in tqdm(range(num_epochs)):
+    ### Train
+    cur_loss_train = 0
+    GNN.train()
+    for batch in train_loader:
+        batch.to(device)
+        optimizer.zero_grad()
+        out = GNN(batch)
+        batch_loss = r2_loss(out[batch.ptr[1:]-1],batch.y[batch.ptr[1:]-1])
+        batch_loss.backward()
+        optimizer.step()
+
+        cur_loss_train += batch_loss.item()
+    
+    train_losses.append(cur_loss_train/no_train)
+
+    ### Evaluate training
+    with torch.no_grad():
+        GNN.eval()
+        train_preds, train_targs = [], []
+        for batch in train_loader:
+            target_mask = batch.ptr[1:]-1
+            batch.to(device)
+            preds = GNN(batch)
+            train_targs += list(batch.y.cpu().numpy()[target_mask])
+            train_preds += list(preds.cpu().detach().numpy()[target_mask])
+
+
+    ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for batch in val_loader:
+            batch.to(device)
+            preds = GNN(batch)[batch.ptr[1:]-1]
+            y_val = batch.y[batch.ptr[1:]-1]
+            val_targs += list(y_val.cpu().numpy())
+            val_preds += list(preds.cpu().detach().numpy())
+            cur_loss_val += r2_loss(preds, y_val)
+
+        val_losses.append(cur_loss_val/no_val)
+
+
+    train_r2_cur = r2_score(train_targs, train_preds)
+    valid_r2_cur = r2_score(val_targs, val_preds)
+    
+    train_r2.append(train_r2_cur)
+    valid_r2.append(valid_r2_cur)
+
+    # EarlyStopping
+    early_stopping(val_losses[-1], GNN)
+    if early_stopping.early_stop:
+        print("Early stopping")
+        print("Epoch %2i: Train Loss %f , Valid Loss %f , Train R2 %f, Valid R2 %f" % (
+            epoch+1, train_losses[-1], val_losses[-1], train_r2_cur, valid_r2_cur))
+        break
+
+    print("Epoch %2i: Train Loss %f, Valid Loss %f, Train R2 %f, Valid R2 %f" % (
+                epoch+1, train_losses[-1], val_losses[-1],train_r2_cur, valid_r2_cur))
+
+
+# Load best model
+GNN.load_state_dict(torch.load('Checkpoints/'+name+'.pt'))
+GNN.eval()
+print('-----------------------------------')
+print(f'Best val R2: {max(valid_r2)}')
+GNN.to(torch.device('cpu'))
+df_clas['Targets'] = [obs.y[-1].numpy().item() for obs in test_loader.dataset]
+df_clas['Preds'] = [GNN(b).detach().numpy().item(-1) for b in test_loader]
+print(f'Test score: {r2_score(df_clas.Targets,df_clas.Preds)}')
+print(classification_report(df_clas.Targets > df_clas.Cut, df_clas.Preds > df_clas.Cut, target_names = ['Under','Over'], zero_division = 0))
+print(f'Time Spent: {time.time()-t}')
 
 
 sys.stdout.close()

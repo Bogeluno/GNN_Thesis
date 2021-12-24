@@ -14,7 +14,7 @@ def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
-start_date = datetime(2019,8,14)
+start_date = datetime(2019,8,1)
 end_date = datetime(2019,11,1)
 
 dates = [single_date.strftime("%Y-%m-%d") for single_date in daterange(start_date, end_date)]
