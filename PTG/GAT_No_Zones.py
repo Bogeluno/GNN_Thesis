@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from datetime import date, timedelta
 import torch.optim as optim
 import torch.nn as nn
-from torch_geometric.nn import Sequential, GCNConv, Linear
+from torch_geometric.nn import Sequential, GATConv, Linear
 from torch_geometric import utils, data
 from torch_geometric.loader import DataLoader
 from sklearn.metrics import r2_score, classification_report
@@ -21,7 +21,7 @@ pd.set_option('mode.chained_assignment',None)
 device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
 no_days = int(sys.argv[1])
 print(device)
-name = "GCN_No_Zones"
+name = "GAT_No_Zones"
 sys.stdout = open("Results/"+name+".txt", "w")
 
 class EarlyStopping:
@@ -194,13 +194,13 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,64, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        (GATConv(9,64, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.25), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,64, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        (GATConv(9,64, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
@@ -336,13 +336,13 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,32, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        (GATConv(9,32, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,32, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        (GATConv(9,32, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
@@ -471,22 +471,21 @@ print(f'Time Spent: {time.time()-t}')
 print('\n')
 print('\n')
 
-
 ################################################
 ################ Small
-#################################################
+################################################
 class GCN(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,16, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        (GATConv(9,16, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,16, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        (GATConv(9,16, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])

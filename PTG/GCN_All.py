@@ -201,25 +201,25 @@ class GCN(torch.nn.Module):
         self.convM = Sequential('x, edge_index, edge_weight', [
         (GCNConv(273,64, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.25), 'x -> x')
+        (nn.Dropout(0.5), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
         (GCNConv(273,64, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.2), 'x -> x')
+        (nn.Dropout(0.5), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
         (Linear(273,64),'x -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.2), 'x -> x')
+        (nn.Dropout(0.5), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
             (Linear(192,64),'x -> x'),
             nn.ReLU(inplace = True),
-            (nn.Dropout(0.2), 'x -> x'),
+            (nn.Dropout(0.5), 'x -> x'),
             (Linear(64,1),'x -> x')
         ])
 
@@ -241,7 +241,7 @@ GNN = GCN().to(device)
 print(GNN, sum(p.numel() for p in GNN.parameters()))
 print('Start learning')
 
-optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.0001) #Chaged to Adam and learning + regulariztion rate set
 
 
 # Set number of epochs
@@ -343,25 +343,25 @@ class GCN(torch.nn.Module):
         self.convM = Sequential('x, edge_index, edge_weight', [
         (GCNConv(273,32, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.4), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
         (GCNConv(273,32, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.4), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
         (Linear(273,32),'x -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.4), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
             (Linear(96,48),'x -> x'),
             nn.ReLU(inplace = True),
-            (nn.Dropout(0.2), 'x -> x'),
+            (nn.Dropout(0.4), 'x -> x'),
             (Linear(48,1),'x -> x')
         ])
 
@@ -383,7 +383,7 @@ GNN = GCN().to(device)
 print(GNN, sum(p.numel() for p in GNN.parameters()))
 print('Start learning')
 
-optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.0001) #Chaged to Adam and learning + regulariztion rate set
 
 
 # Set number of epochs
@@ -486,25 +486,25 @@ class GCN(torch.nn.Module):
         self.convM = Sequential('x, edge_index, edge_weight', [
         (GCNConv(273,16, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.3), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
         (GCNConv(273,16, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.3), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
         (Linear(273,16),'x -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.3), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
             (Linear(48,16),'x -> x'),
             nn.ReLU(inplace = True),
-            (nn.Dropout(0.1), 'x -> x'),
+            (nn.Dropout(0.3), 'x -> x'),
             (Linear(16,1),'x -> x')
         ])
 
@@ -526,7 +526,7 @@ GNN = GCN().to(device)
 print(GNN, sum(p.numel() for p in GNN.parameters()))
 print('Start learning')
 
-optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.0001) #Chaged to Adam and learning + regulariztion rate set
 
 
 # Set number of epochs

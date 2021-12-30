@@ -1,0 +1,386 @@
+              total        used        free      shared  buff/cache   available
+Mem:         128678       50442       47196         256       31040       76761
+Swap:          2047        2047           0
+
+Time spent: 604.0542225837708
+GCN(
+  (convM): Sequential(
+    (0): GATConv(9, 64, heads=1)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.25, inplace=False)
+  )
+  (convA): Sequential(
+    (0): GATConv(9, 64, heads=1)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (linS): Sequential(
+    (0): Linear(9, 64, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (seq): Sequential(
+    (0): Linear(192, 64, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(64, 1, bias=True)
+  )
+) 14849
+Start learning
+Epoch  1: Train Loss 0.001427, Valid Loss -0.097076, Train R2 0.101648, Valid R2 0.095999
+Epoch  2: Train Loss -0.099228, Valid Loss -0.105997, Train R2 0.113891, Valid R2 0.106643
+Epoch  3: Train Loss -0.106968, Valid Loss -0.110097, Train R2 0.117654, Valid R2 0.110741
+Epoch  4: Train Loss -0.110229, Valid Loss -0.115661, Train R2 0.121499, Valid R2 0.115310
+Epoch  5: Train Loss -0.114862, Valid Loss -0.120785, Train R2 0.125886, Valid R2 0.120008
+Epoch  6: Train Loss -0.116521, Valid Loss -0.122980, Train R2 0.128792, Valid R2 0.122716
+Epoch  7: Train Loss -0.117955, Valid Loss -0.123402, Train R2 0.128491, Valid R2 0.122525
+Epoch  8: Train Loss -0.119388, Valid Loss -0.126052, Train R2 0.131899, Valid R2 0.126539
+Epoch  9: Train Loss -0.121761, Valid Loss -0.125787, Train R2 0.132938, Valid R2 0.127149
+Epoch 10: Train Loss -0.123033, Valid Loss -0.127311, Train R2 0.131607, Valid R2 0.126572
+Epoch 11: Train Loss -0.124443, Valid Loss -0.130694, Train R2 0.136277, Valid R2 0.130962
+Epoch 12: Train Loss -0.126191, Valid Loss -0.133370, Train R2 0.137920, Valid R2 0.133227
+Epoch 13: Train Loss -0.126977, Valid Loss -0.132790, Train R2 0.139043, Valid R2 0.132634
+Epoch 14: Train Loss -0.128472, Valid Loss -0.132063, Train R2 0.140535, Valid R2 0.132778
+Epoch 15: Train Loss -0.130164, Valid Loss -0.135201, Train R2 0.141475, Valid R2 0.135168
+Epoch 16: Train Loss -0.131114, Valid Loss -0.133647, Train R2 0.141304, Valid R2 0.134728
+Epoch 17: Train Loss -0.130304, Valid Loss -0.137541, Train R2 0.143331, Valid R2 0.137314
+Epoch 18: Train Loss -0.132050, Valid Loss -0.137389, Train R2 0.144570, Valid R2 0.138120
+Epoch 19: Train Loss -0.133734, Valid Loss -0.136944, Train R2 0.144050, Valid R2 0.137092
+Epoch 20: Train Loss -0.134230, Valid Loss -0.137599, Train R2 0.145950, Valid R2 0.138216
+Epoch 21: Train Loss -0.133777, Valid Loss -0.139263, Train R2 0.146085, Valid R2 0.138476
+Epoch 22: Train Loss -0.135804, Valid Loss -0.136874, Train R2 0.147201, Valid R2 0.138459
+Epoch 23: Train Loss -0.134486, Valid Loss -0.140495, Train R2 0.146755, Valid R2 0.139179
+Epoch 24: Train Loss -0.135384, Valid Loss -0.139929, Train R2 0.148533, Valid R2 0.140670
+Epoch 25: Train Loss -0.135387, Valid Loss -0.140767, Train R2 0.149603, Valid R2 0.140943
+Epoch 26: Train Loss -0.137015, Valid Loss -0.141468, Train R2 0.148456, Valid R2 0.140203
+Epoch 27: Train Loss -0.139103, Valid Loss -0.140930, Train R2 0.150270, Valid R2 0.141941
+Epoch 28: Train Loss -0.138091, Valid Loss -0.142407, Train R2 0.151381, Valid R2 0.142401
+Epoch 29: Train Loss -0.137177, Valid Loss -0.135985, Train R2 0.145049, Valid R2 0.135979
+Epoch 30: Train Loss -0.137563, Valid Loss -0.140464, Train R2 0.151968, Valid R2 0.141751
+Epoch 31: Train Loss -0.139830, Valid Loss -0.141064, Train R2 0.151437, Valid R2 0.141187
+Epoch 32: Train Loss -0.140008, Valid Loss -0.139634, Train R2 0.148433, Valid R2 0.139075
+Epoch 33: Train Loss -0.139312, Valid Loss -0.144544, Train R2 0.153688, Valid R2 0.144195
+Epoch 34: Train Loss -0.141921, Valid Loss -0.143908, Train R2 0.154447, Valid R2 0.143526
+Epoch 35: Train Loss -0.140504, Valid Loss -0.143605, Train R2 0.153558, Valid R2 0.143100
+Epoch 36: Train Loss -0.143149, Valid Loss -0.143008, Train R2 0.155356, Valid R2 0.144298
+Epoch 37: Train Loss -0.143556, Valid Loss -0.145442, Train R2 0.156069, Valid R2 0.145087
+Epoch 38: Train Loss -0.143409, Valid Loss -0.146330, Train R2 0.157249, Valid R2 0.146973
+Epoch 39: Train Loss -0.144872, Valid Loss -0.144647, Train R2 0.156963, Valid R2 0.144910
+Epoch 40: Train Loss -0.144304, Valid Loss -0.147225, Train R2 0.158093, Valid R2 0.147143
+Epoch 41: Train Loss -0.146168, Valid Loss -0.144124, Train R2 0.157609, Valid R2 0.146357
+Epoch 42: Train Loss -0.146717, Valid Loss -0.148572, Train R2 0.160124, Valid R2 0.147994
+Epoch 43: Train Loss -0.147970, Valid Loss -0.147136, Train R2 0.158738, Valid R2 0.147644
+Epoch 44: Train Loss -0.149023, Valid Loss -0.142527, Train R2 0.154864, Valid R2 0.142330
+Epoch 45: Train Loss -0.148516, Valid Loss -0.148720, Train R2 0.161689, Valid R2 0.149276
+Epoch 46: Train Loss -0.149486, Valid Loss -0.149182, Train R2 0.162692, Valid R2 0.150477
+Epoch 47: Train Loss -0.149799, Valid Loss -0.147968, Train R2 0.157113, Valid R2 0.147727
+Epoch 48: Train Loss -0.150751, Valid Loss -0.152198, Train R2 0.163490, Valid R2 0.151660
+Epoch 49: Train Loss -0.149519, Valid Loss -0.151799, Train R2 0.164229, Valid R2 0.153055
+Epoch 50: Train Loss -0.151910, Valid Loss -0.151540, Train R2 0.163598, Valid R2 0.150999
+Epoch 51: Train Loss -0.152199, Valid Loss -0.152492, Train R2 0.164696, Valid R2 0.152441
+Epoch 52: Train Loss -0.152016, Valid Loss -0.153788, Train R2 0.165538, Valid R2 0.153693
+Epoch 53: Train Loss -0.153080, Valid Loss -0.153829, Train R2 0.165810, Valid R2 0.153098
+Epoch 54: Train Loss -0.154295, Valid Loss -0.150435, Train R2 0.163458, Valid R2 0.151119
+Epoch 55: Train Loss -0.154082, Valid Loss -0.154682, Train R2 0.166405, Valid R2 0.154913
+Epoch 56: Train Loss -0.155894, Valid Loss -0.154922, Train R2 0.168037, Valid R2 0.155438
+Epoch 57: Train Loss -0.155045, Valid Loss -0.154932, Train R2 0.166959, Valid R2 0.154159
+Epoch 58: Train Loss -0.154689, Valid Loss -0.155542, Train R2 0.168715, Valid R2 0.155164
+Epoch 59: Train Loss -0.154174, Valid Loss -0.159254, Train R2 0.170553, Valid R2 0.158906
+Epoch 60: Train Loss -0.154489, Valid Loss -0.155720, Train R2 0.170161, Valid R2 0.156630
+Epoch 61: Train Loss -0.155669, Valid Loss -0.155391, Train R2 0.169949, Valid R2 0.156389
+Epoch 62: Train Loss -0.156532, Valid Loss -0.155925, Train R2 0.169401, Valid R2 0.156320
+Epoch 63: Train Loss -0.156881, Valid Loss -0.156815, Train R2 0.170196, Valid R2 0.157267
+EarlyStopping counter: 5 out of 20
+Epoch 64: Train Loss -0.157834, Valid Loss -0.156344, Train R2 0.167037, Valid R2 0.156090
+Epoch 65: Train Loss -0.158689, Valid Loss -0.156966, Train R2 0.170657, Valid R2 0.156622
+Epoch 66: Train Loss -0.158018, Valid Loss -0.157050, Train R2 0.171568, Valid R2 0.157540
+Epoch 67: Train Loss -0.159695, Valid Loss -0.156245, Train R2 0.169096, Valid R2 0.156622
+Epoch 68: Train Loss -0.158720, Valid Loss -0.158444, Train R2 0.174029, Valid R2 0.158139
+Epoch 69: Train Loss -0.161690, Valid Loss -0.159919, Train R2 0.174622, Valid R2 0.159537
+Epoch 70: Train Loss -0.158907, Valid Loss -0.159183, Train R2 0.170982, Valid R2 0.157774
+Epoch 71: Train Loss -0.161498, Valid Loss -0.157985, Train R2 0.170802, Valid R2 0.156869
+Epoch 72: Train Loss -0.161142, Valid Loss -0.159952, Train R2 0.174393, Valid R2 0.159205
+Epoch 73: Train Loss -0.161397, Valid Loss -0.159489, Train R2 0.173429, Valid R2 0.159645
+Epoch 74: Train Loss -0.163107, Valid Loss -0.160486, Train R2 0.175323, Valid R2 0.160655
+Epoch 75: Train Loss -0.162777, Valid Loss -0.159523, Train R2 0.174674, Valid R2 0.159123
+Epoch 76: Train Loss -0.161372, Valid Loss -0.159911, Train R2 0.176518, Valid R2 0.160647
+Epoch 77: Train Loss -0.163336, Valid Loss -0.162345, Train R2 0.176756, Valid R2 0.161017
+Epoch 78: Train Loss -0.162008, Valid Loss -0.161411, Train R2 0.176346, Valid R2 0.161139
+Epoch 79: Train Loss -0.161316, Valid Loss -0.161471, Train R2 0.177583, Valid R2 0.161286
+Epoch 80: Train Loss -0.162196, Valid Loss -0.156941, Train R2 0.171581, Valid R2 0.156349
+Epoch 81: Train Loss -0.164068, Valid Loss -0.160863, Train R2 0.177192, Valid R2 0.161079
+EarlyStopping counter: 5 out of 20
+Epoch 82: Train Loss -0.164155, Valid Loss -0.160137, Train R2 0.179716, Valid R2 0.160376
+Epoch 83: Train Loss -0.164730, Valid Loss -0.163123, Train R2 0.179028, Valid R2 0.161379
+Epoch 84: Train Loss -0.163330, Valid Loss -0.162201, Train R2 0.179734, Valid R2 0.162660
+Epoch 85: Train Loss -0.163873, Valid Loss -0.160868, Train R2 0.179280, Valid R2 0.161206
+Epoch 86: Train Loss -0.165644, Valid Loss -0.161616, Train R2 0.180718, Valid R2 0.162012
+Epoch 87: Train Loss -0.165847, Valid Loss -0.161871, Train R2 0.179641, Valid R2 0.161530
+EarlyStopping counter: 5 out of 20
+Epoch 88: Train Loss -0.165096, Valid Loss -0.158883, Train R2 0.174307, Valid R2 0.158774
+Epoch 89: Train Loss -0.166923, Valid Loss -0.162541, Train R2 0.178945, Valid R2 0.162668
+Epoch 90: Train Loss -0.166194, Valid Loss -0.163039, Train R2 0.180656, Valid R2 0.162402
+Epoch 91: Train Loss -0.165640, Valid Loss -0.163937, Train R2 0.180477, Valid R2 0.164449
+Epoch 92: Train Loss -0.165925, Valid Loss -0.162865, Train R2 0.180913, Valid R2 0.163344
+Epoch 93: Train Loss -0.167032, Valid Loss -0.164825, Train R2 0.182009, Valid R2 0.164542
+Epoch 94: Train Loss -0.167497, Valid Loss -0.162124, Train R2 0.178481, Valid R2 0.161475
+Epoch 95: Train Loss -0.167296, Valid Loss -0.163923, Train R2 0.182257, Valid R2 0.164396
+Epoch 96: Train Loss -0.168408, Valid Loss -0.166080, Train R2 0.183150, Valid R2 0.164449
+Epoch 97: Train Loss -0.167863, Valid Loss -0.166367, Train R2 0.183048, Valid R2 0.166002
+Epoch 98: Train Loss -0.167015, Valid Loss -0.163817, Train R2 0.181808, Valid R2 0.162700
+Epoch 99: Train Loss -0.167076, Valid Loss -0.160962, Train R2 0.178635, Valid R2 0.160287
+Epoch 100: Train Loss -0.168896, Valid Loss -0.165323, Train R2 0.183086, Valid R2 0.163675
+Epoch 101: Train Loss -0.168271, Valid Loss -0.165685, Train R2 0.184023, Valid R2 0.164979
+EarlyStopping counter: 5 out of 20
+Epoch 102: Train Loss -0.169328, Valid Loss -0.164261, Train R2 0.183592, Valid R2 0.164193
+Epoch 103: Train Loss -0.167723, Valid Loss -0.162550, Train R2 0.181174, Valid R2 0.162867
+Epoch 104: Train Loss -0.170289, Valid Loss -0.163574, Train R2 0.183371, Valid R2 0.163105
+Epoch 105: Train Loss -0.168420, Valid Loss -0.162072, Train R2 0.182291, Valid R2 0.162944
+Epoch 106: Train Loss -0.169985, Valid Loss -0.162127, Train R2 0.183277, Valid R2 0.162979
+EarlyStopping counter: 10 out of 20
+Epoch 107: Train Loss -0.170331, Valid Loss -0.161810, Train R2 0.182600, Valid R2 0.162317
+Epoch 108: Train Loss -0.171205, Valid Loss -0.165477, Train R2 0.186405, Valid R2 0.165669
+Epoch 109: Train Loss -0.170666, Valid Loss -0.166028, Train R2 0.184811, Valid R2 0.164606
+Epoch 110: Train Loss -0.171220, Valid Loss -0.164678, Train R2 0.186192, Valid R2 0.166673
+Epoch 111: Train Loss -0.169391, Valid Loss -0.165250, Train R2 0.186683, Valid R2 0.166128
+EarlyStopping counter: 15 out of 20
+Epoch 112: Train Loss -0.167988, Valid Loss -0.164935, Train R2 0.185595, Valid R2 0.164491
+Epoch 113: Train Loss -0.169563, Valid Loss -0.161931, Train R2 0.179737, Valid R2 0.160715
+Epoch 114: Train Loss -0.169824, Valid Loss -0.164602, Train R2 0.184766, Valid R2 0.164585
+Epoch 115: Train Loss -0.171573, Valid Loss -0.164986, Train R2 0.187315, Valid R2 0.164489
+Epoch 116: Train Loss -0.169946, Valid Loss -0.165931, Train R2 0.186695, Valid R2 0.166711
+EarlyStopping counter: 20 out of 20
+Early stopping
+Epoch 117: Train Loss -0.170389 , Valid Loss -0.166356 , Train R2 0.187317, Valid R2 0.166925
+-----------------------------------
+Best val R2: 0.16692541303768882
+Test score: 0.16132715702136458
+              precision    recall  f1-score   support
+
+       Under       0.86      0.99      0.92     26725
+        Over       0.50      0.06      0.11      4420
+
+    accuracy                           0.86     31145
+   macro avg       0.68      0.53      0.52     31145
+weighted avg       0.81      0.86      0.81     31145
+
+Time Spent: 5592.807653427124
+
+
+
+
+GCN(
+  (convM): Sequential(
+    (0): GATConv(9, 32, heads=1)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (convA): Sequential(
+    (0): GATConv(9, 32, heads=1)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (linS): Sequential(
+    (0): Linear(9, 32, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.1, inplace=False)
+  )
+  (seq): Sequential(
+    (0): Linear(96, 48, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(48, 1, bias=True)
+  )
+) 5921
+Start learning
+Epoch  1: Train Loss 0.047406, Valid Loss -0.089340, Train R2 0.095257, Valid R2 0.090681
+Epoch  2: Train Loss -0.094151, Valid Loss -0.103701, Train R2 0.108484, Valid R2 0.104051
+Epoch  3: Train Loss -0.100325, Valid Loss -0.109108, Train R2 0.114308, Valid R2 0.109157
+Epoch  4: Train Loss -0.106444, Valid Loss -0.108348, Train R2 0.116453, Valid R2 0.109371
+Epoch  5: Train Loss -0.109291, Valid Loss -0.117567, Train R2 0.121873, Valid R2 0.116387
+Epoch  6: Train Loss -0.112203, Valid Loss -0.118045, Train R2 0.125592, Valid R2 0.117816
+Epoch  7: Train Loss -0.115145, Valid Loss -0.122086, Train R2 0.130050, Valid R2 0.122489
+Epoch  8: Train Loss -0.120449, Valid Loss -0.125095, Train R2 0.134221, Valid R2 0.126054
+Epoch  9: Train Loss -0.123583, Valid Loss -0.127755, Train R2 0.136513, Valid R2 0.128736
+Epoch 10: Train Loss -0.124695, Valid Loss -0.130394, Train R2 0.139134, Valid R2 0.131576
+Epoch 11: Train Loss -0.126201, Valid Loss -0.133301, Train R2 0.139811, Valid R2 0.133380
+Epoch 12: Train Loss -0.129632, Valid Loss -0.133002, Train R2 0.141646, Valid R2 0.134056
+Epoch 13: Train Loss -0.129543, Valid Loss -0.134765, Train R2 0.142541, Valid R2 0.135244
+Epoch 14: Train Loss -0.130370, Valid Loss -0.136913, Train R2 0.143911, Valid R2 0.136587
+Epoch 15: Train Loss -0.132083, Valid Loss -0.138370, Train R2 0.144975, Valid R2 0.137101
+Epoch 16: Train Loss -0.134192, Valid Loss -0.137698, Train R2 0.145875, Valid R2 0.138182
+Epoch 17: Train Loss -0.133135, Valid Loss -0.135225, Train R2 0.142748, Valid R2 0.134727
+Epoch 18: Train Loss -0.134387, Valid Loss -0.140317, Train R2 0.148880, Valid R2 0.140126
+Epoch 19: Train Loss -0.134812, Valid Loss -0.140646, Train R2 0.149430, Valid R2 0.141326
+Epoch 20: Train Loss -0.136929, Valid Loss -0.141693, Train R2 0.150331, Valid R2 0.141980
+Epoch 21: Train Loss -0.137244, Valid Loss -0.140890, Train R2 0.149013, Valid R2 0.141352
+Epoch 22: Train Loss -0.137942, Valid Loss -0.144305, Train R2 0.151489, Valid R2 0.143931
+Epoch 23: Train Loss -0.137624, Valid Loss -0.142921, Train R2 0.151042, Valid R2 0.142479
+Epoch 24: Train Loss -0.140531, Valid Loss -0.144737, Train R2 0.153450, Valid R2 0.144523
+Epoch 25: Train Loss -0.140472, Valid Loss -0.146112, Train R2 0.154262, Valid R2 0.145729
+Epoch 26: Train Loss -0.140380, Valid Loss -0.145999, Train R2 0.154972, Valid R2 0.145496
+Epoch 27: Train Loss -0.140969, Valid Loss -0.144823, Train R2 0.154319, Valid R2 0.145230
+Epoch 28: Train Loss -0.141981, Valid Loss -0.146285, Train R2 0.156014, Valid R2 0.147276
+Epoch 29: Train Loss -0.142273, Valid Loss -0.146214, Train R2 0.156398, Valid R2 0.147269
+Epoch 30: Train Loss -0.142552, Valid Loss -0.145870, Train R2 0.156853, Valid R2 0.146603
+Epoch 31: Train Loss -0.144140, Valid Loss -0.148527, Train R2 0.157106, Valid R2 0.147929
+Epoch 32: Train Loss -0.145460, Valid Loss -0.142831, Train R2 0.153491, Valid R2 0.143292
+Epoch 33: Train Loss -0.144164, Valid Loss -0.148187, Train R2 0.157641, Valid R2 0.147332
+Epoch 34: Train Loss -0.144946, Valid Loss -0.146335, Train R2 0.158454, Valid R2 0.146938
+Epoch 35: Train Loss -0.146135, Valid Loss -0.147689, Train R2 0.159468, Valid R2 0.148742
+Epoch 36: Train Loss -0.145074, Valid Loss -0.150284, Train R2 0.158646, Valid R2 0.149054
+Epoch 37: Train Loss -0.146237, Valid Loss -0.147981, Train R2 0.159821, Valid R2 0.148881
+Epoch 38: Train Loss -0.148901, Valid Loss -0.149222, Train R2 0.160251, Valid R2 0.149625
+Epoch 39: Train Loss -0.147934, Valid Loss -0.148070, Train R2 0.160438, Valid R2 0.148387
+Epoch 40: Train Loss -0.151639, Valid Loss -0.149529, Train R2 0.159543, Valid R2 0.149126
+Epoch 41: Train Loss -0.148763, Valid Loss -0.150585, Train R2 0.162394, Valid R2 0.150591
+Epoch 42: Train Loss -0.150284, Valid Loss -0.151425, Train R2 0.163595, Valid R2 0.151936
+Epoch 43: Train Loss -0.148936, Valid Loss -0.150453, Train R2 0.162103, Valid R2 0.150099
+Epoch 44: Train Loss -0.150845, Valid Loss -0.151170, Train R2 0.161306, Valid R2 0.150488
+Epoch 45: Train Loss -0.151584, Valid Loss -0.153709, Train R2 0.163272, Valid R2 0.152242
+Epoch 46: Train Loss -0.150390, Valid Loss -0.153214, Train R2 0.163522, Valid R2 0.153146
+Epoch 47: Train Loss -0.151342, Valid Loss -0.153322, Train R2 0.164455, Valid R2 0.153217
+Epoch 48: Train Loss -0.152981, Valid Loss -0.153557, Train R2 0.164974, Valid R2 0.153595
+Epoch 49: Train Loss -0.153008, Valid Loss -0.153228, Train R2 0.165884, Valid R2 0.153447
+EarlyStopping counter: 5 out of 20
+Epoch 50: Train Loss -0.152340, Valid Loss -0.152939, Train R2 0.165410, Valid R2 0.153462
+Epoch 51: Train Loss -0.152073, Valid Loss -0.151167, Train R2 0.165822, Valid R2 0.152646
+Epoch 52: Train Loss -0.154179, Valid Loss -0.153792, Train R2 0.166628, Valid R2 0.154762
+Epoch 53: Train Loss -0.152766, Valid Loss -0.156036, Train R2 0.167549, Valid R2 0.155663
+Epoch 54: Train Loss -0.153917, Valid Loss -0.154232, Train R2 0.167096, Valid R2 0.154764
+Epoch 55: Train Loss -0.154670, Valid Loss -0.155345, Train R2 0.167022, Valid R2 0.155812
+Epoch 56: Train Loss -0.154061, Valid Loss -0.154472, Train R2 0.167540, Valid R2 0.154148
+Epoch 57: Train Loss -0.155716, Valid Loss -0.154141, Train R2 0.168780, Valid R2 0.156011
+Epoch 58: Train Loss -0.155777, Valid Loss -0.156682, Train R2 0.169150, Valid R2 0.155619
+Epoch 59: Train Loss -0.156290, Valid Loss -0.153683, Train R2 0.167909, Valid R2 0.154480
+Epoch 60: Train Loss -0.155286, Valid Loss -0.155661, Train R2 0.169443, Valid R2 0.155914
+Epoch 61: Train Loss -0.157780, Valid Loss -0.155588, Train R2 0.170312, Valid R2 0.156428
+Epoch 62: Train Loss -0.156745, Valid Loss -0.156587, Train R2 0.169702, Valid R2 0.155974
+EarlyStopping counter: 5 out of 20
+Epoch 63: Train Loss -0.157408, Valid Loss -0.154630, Train R2 0.168480, Valid R2 0.154639
+Epoch 64: Train Loss -0.157749, Valid Loss -0.156620, Train R2 0.168991, Valid R2 0.154029
+Epoch 65: Train Loss -0.158287, Valid Loss -0.156727, Train R2 0.170482, Valid R2 0.156254
+Epoch 66: Train Loss -0.157489, Valid Loss -0.156120, Train R2 0.170267, Valid R2 0.156652
+Epoch 67: Train Loss -0.157510, Valid Loss -0.158310, Train R2 0.170673, Valid R2 0.157584
+Epoch 68: Train Loss -0.160300, Valid Loss -0.156611, Train R2 0.171299, Valid R2 0.157066
+Epoch 69: Train Loss -0.160932, Valid Loss -0.157473, Train R2 0.170468, Valid R2 0.156163
+Epoch 70: Train Loss -0.160414, Valid Loss -0.158178, Train R2 0.172490, Valid R2 0.157373
+Epoch 71: Train Loss -0.159235, Valid Loss -0.157659, Train R2 0.173007, Valid R2 0.157917
+EarlyStopping counter: 5 out of 20
+Epoch 72: Train Loss -0.161703, Valid Loss -0.155374, Train R2 0.172136, Valid R2 0.156575
+Epoch 73: Train Loss -0.160408, Valid Loss -0.157809, Train R2 0.173792, Valid R2 0.157362
+Epoch 74: Train Loss -0.160596, Valid Loss -0.156682, Train R2 0.173285, Valid R2 0.157541
+Epoch 75: Train Loss -0.161714, Valid Loss -0.157653, Train R2 0.173882, Valid R2 0.159370
+Epoch 76: Train Loss -0.160107, Valid Loss -0.160027, Train R2 0.173938, Valid R2 0.159394
+Epoch 77: Train Loss -0.159898, Valid Loss -0.158021, Train R2 0.173626, Valid R2 0.157716
+Epoch 78: Train Loss -0.161457, Valid Loss -0.159303, Train R2 0.174985, Valid R2 0.158935
+Epoch 79: Train Loss -0.161673, Valid Loss -0.158499, Train R2 0.175083, Valid R2 0.159724
+Epoch 80: Train Loss -0.161041, Valid Loss -0.158609, Train R2 0.173440, Valid R2 0.158858
+Epoch 81: Train Loss -0.161901, Valid Loss -0.160594, Train R2 0.174527, Valid R2 0.159889
+Epoch 82: Train Loss -0.163276, Valid Loss -0.159066, Train R2 0.175076, Valid R2 0.159769
+Epoch 83: Train Loss -0.162450, Valid Loss -0.161650, Train R2 0.176467, Valid R2 0.160684
+Epoch 84: Train Loss -0.163732, Valid Loss -0.160534, Train R2 0.175108, Valid R2 0.159365
+Epoch 85: Train Loss -0.163796, Valid Loss -0.160991, Train R2 0.176065, Valid R2 0.160646
+Epoch 86: Train Loss -0.162921, Valid Loss -0.159130, Train R2 0.175185, Valid R2 0.159658
+Epoch 87: Train Loss -0.162929, Valid Loss -0.160694, Train R2 0.175561, Valid R2 0.159820
+EarlyStopping counter: 5 out of 20
+Epoch 88: Train Loss -0.163109, Valid Loss -0.161601, Train R2 0.176314, Valid R2 0.161246
+Epoch 89: Train Loss -0.163324, Valid Loss -0.160998, Train R2 0.176615, Valid R2 0.161055
+Epoch 90: Train Loss -0.164868, Valid Loss -0.160794, Train R2 0.177812, Valid R2 0.161881
+Epoch 91: Train Loss -0.164850, Valid Loss -0.161931, Train R2 0.178533, Valid R2 0.161782
+Epoch 92: Train Loss -0.164906, Valid Loss -0.161911, Train R2 0.177588, Valid R2 0.162566
+Epoch 93: Train Loss -0.166292, Valid Loss -0.161054, Train R2 0.176189, Valid R2 0.160874
+Epoch 94: Train Loss -0.164576, Valid Loss -0.161411, Train R2 0.176408, Valid R2 0.161158
+Epoch 95: Train Loss -0.163848, Valid Loss -0.163018, Train R2 0.178408, Valid R2 0.163384
+Epoch 96: Train Loss -0.163233, Valid Loss -0.162366, Train R2 0.177586, Valid R2 0.161766
+Epoch 97: Train Loss -0.164512, Valid Loss -0.163077, Train R2 0.178614, Valid R2 0.161259
+Epoch 98: Train Loss -0.165122, Valid Loss -0.160117, Train R2 0.177629, Valid R2 0.159810
+Epoch 99: Train Loss -0.165694, Valid Loss -0.163313, Train R2 0.178112, Valid R2 0.162088
+Epoch 100: Train Loss -0.167573, Valid Loss -0.161350, Train R2 0.180557, Valid R2 0.163042
+Epoch 101: Train Loss -0.165406, Valid Loss -0.163244, Train R2 0.178339, Valid R2 0.162965
+Epoch 102: Train Loss -0.166688, Valid Loss -0.160608, Train R2 0.178468, Valid R2 0.160608
+Epoch 103: Train Loss -0.165711, Valid Loss -0.161799, Train R2 0.180112, Valid R2 0.162354
+EarlyStopping counter: 5 out of 20
+Epoch 104: Train Loss -0.166964, Valid Loss -0.162803, Train R2 0.179228, Valid R2 0.163463
+Epoch 105: Train Loss -0.165564, Valid Loss -0.164388, Train R2 0.179568, Valid R2 0.163375
+Epoch 106: Train Loss -0.166091, Valid Loss -0.158938, Train R2 0.176485, Valid R2 0.159704
+Epoch 107: Train Loss -0.165333, Valid Loss -0.161173, Train R2 0.179892, Valid R2 0.161501
+Epoch 108: Train Loss -0.167437, Valid Loss -0.163357, Train R2 0.180207, Valid R2 0.163418
+Epoch 109: Train Loss -0.167126, Valid Loss -0.162817, Train R2 0.180706, Valid R2 0.164057
+EarlyStopping counter: 5 out of 20
+Epoch 110: Train Loss -0.168510, Valid Loss -0.164256, Train R2 0.181529, Valid R2 0.163925
+Epoch 111: Train Loss -0.168665, Valid Loss -0.163799, Train R2 0.180187, Valid R2 0.163533
+Epoch 112: Train Loss -0.168032, Valid Loss -0.162815, Train R2 0.181490, Valid R2 0.163226
+Epoch 113: Train Loss -0.168736, Valid Loss -0.163701, Train R2 0.182547, Valid R2 0.164348
+Epoch 114: Train Loss -0.168623, Valid Loss -0.160290, Train R2 0.180083, Valid R2 0.161511
+EarlyStopping counter: 10 out of 20
+Epoch 115: Train Loss -0.169096, Valid Loss -0.162593, Train R2 0.181215, Valid R2 0.163587
+Epoch 116: Train Loss -0.169659, Valid Loss -0.163437, Train R2 0.182717, Valid R2 0.164061
+Epoch 117: Train Loss -0.169185, Valid Loss -0.165060, Train R2 0.181782, Valid R2 0.164990
+Epoch 118: Train Loss -0.170123, Valid Loss -0.163532, Train R2 0.182990, Valid R2 0.164146
+Epoch 119: Train Loss -0.167731, Valid Loss -0.165688, Train R2 0.184033, Valid R2 0.165488
+Epoch 120: Train Loss -0.170173, Valid Loss -0.164070, Train R2 0.182867, Valid R2 0.163684
+Epoch 121: Train Loss -0.170299, Valid Loss -0.167285, Train R2 0.184448, Valid R2 0.165963
+Epoch 122: Train Loss -0.170839, Valid Loss -0.164531, Train R2 0.182751, Valid R2 0.163415
+Epoch 123: Train Loss -0.167901, Valid Loss -0.166289, Train R2 0.183453, Valid R2 0.164717
+Epoch 124: Train Loss -0.171384, Valid Loss -0.163919, Train R2 0.181908, Valid R2 0.163579
+Epoch 125: Train Loss -0.169077, Valid Loss -0.165335, Train R2 0.183430, Valid R2 0.165883
+EarlyStopping counter: 5 out of 20
+Epoch 126: Train Loss -0.169520, Valid Loss -0.165150, Train R2 0.184715, Valid R2 0.166233
+Epoch 127: Train Loss -0.171157, Valid Loss -0.162786, Train R2 0.179992, Valid R2 0.162278
+Epoch 128: Train Loss -0.170663, Valid Loss -0.166450, Train R2 0.184176, Valid R2 0.166475
+Epoch 129: Train Loss -0.171065, Valid Loss -0.167944, Train R2 0.184394, Valid R2 0.166462
+Epoch 130: Train Loss -0.170727, Valid Loss -0.164115, Train R2 0.183953, Valid R2 0.164028
+Epoch 131: Train Loss -0.171823, Valid Loss -0.168011, Train R2 0.185159, Valid R2 0.166139
+Epoch 132: Train Loss -0.171770, Valid Loss -0.166707, Train R2 0.185028, Valid R2 0.165285
+Epoch 133: Train Loss -0.171845, Valid Loss -0.161877, Train R2 0.184816, Valid R2 0.163802
+Epoch 134: Train Loss -0.172986, Valid Loss -0.166284, Train R2 0.185772, Valid R2 0.166403
+Epoch 135: Train Loss -0.171247, Valid Loss -0.167203, Train R2 0.186442, Valid R2 0.166129
+EarlyStopping counter: 5 out of 20
+Epoch 136: Train Loss -0.172573, Valid Loss -0.165713, Train R2 0.185384, Valid R2 0.166113
+Epoch 137: Train Loss -0.172566, Valid Loss -0.166826, Train R2 0.185855, Valid R2 0.166987
+Epoch 138: Train Loss -0.171182, Valid Loss -0.167692, Train R2 0.186353, Valid R2 0.167515
+Epoch 139: Train Loss -0.172404, Valid Loss -0.163868, Train R2 0.184757, Valid R2 0.164393
+Epoch 140: Train Loss -0.172967, Valid Loss -0.169819, Train R2 0.187539, Valid R2 0.168580
+Epoch 141: Train Loss -0.172392, Valid Loss -0.165107, Train R2 0.186246, Valid R2 0.165557
+Epoch 142: Train Loss -0.171958, Valid Loss -0.168591, Train R2 0.187173, Valid R2 0.167292
+Epoch 143: Train Loss -0.171647, Valid Loss -0.164578, Train R2 0.183166, Valid R2 0.163967
+Epoch 144: Train Loss -0.171895, Valid Loss -0.165715, Train R2 0.187008, Valid R2 0.166690
+EarlyStopping counter: 5 out of 20
+Epoch 145: Train Loss -0.171316, Valid Loss -0.166862, Train R2 0.187113, Valid R2 0.166144
+Epoch 146: Train Loss -0.172153, Valid Loss -0.165207, Train R2 0.186735, Valid R2 0.165522
+Epoch 147: Train Loss -0.173332, Valid Loss -0.167171, Train R2 0.187372, Valid R2 0.168134
+Epoch 148: Train Loss -0.173853, Valid Loss -0.166940, Train R2 0.187572, Valid R2 0.166528
+Epoch 149: Train Loss -0.173082, Valid Loss -0.166721, Train R2 0.187588, Valid R2 0.166150
+EarlyStopping counter: 10 out of 20
+Epoch 150: Train Loss -0.173730, Valid Loss -0.165723, Train R2 0.188553, Valid R2 0.167655
+Epoch 151: Train Loss -0.173370, Valid Loss -0.166156, Train R2 0.186975, Valid R2 0.167421
+Epoch 152: Train Loss -0.173145, Valid Loss -0.166988, Train R2 0.187488, Valid R2 0.166674
+Epoch 153: Train Loss -0.173323, Valid Loss -0.166562, Train R2 0.187318, Valid R2 0.166096
+Epoch 154: Train Loss -0.175248, Valid Loss -0.168813, Train R2 0.189831, Valid R2 0.168010
+EarlyStopping counter: 15 out of 20
+Epoch 155: Train Loss -0.173766, Valid Loss -0.163633, Train R2 0.184651, Valid R2 0.163815
+Epoch 156: Train Loss -0.174601, Valid Loss -0.164014, Train R2 0.186725, Valid R2 0.164882
+Epoch 157: Train Loss -0.174159, Valid Loss -0.167036, Train R2 0.187083, Valid R2 0.166132
+Epoch 158: Train Loss -0.173447, Valid Loss -0.164738, Train R2 0.188367, Valid R2 0.166767
+Epoch 159: Train Loss -0.173570, Valid Loss -0.169172, Train R2 0.189491, Valid R2 0.169321
+EarlyStopping counter: 20 out of 20
+Early stopping
+Epoch 160: Train Loss -0.174145 , Valid Loss -0.168220 , Train R2 0.189396, Valid R2 0.168775
+-----------------------------------
+Best val R2: 0.16932125357287509
+Test score: 0.16371383110969784
+              precision    recall  f1-score   support
+
+       Under       0.87      0.99      0.92     26725
+        Over       0.48      0.07      0.12      4420
+
+    accuracy                           0.86     31145
+   macro avg       0.67      0.53      0.52     31145
+weighted avg       0.81      0.86      0.81     31145
+
+Time Spent: 10633.412638425827
+
+
+
+

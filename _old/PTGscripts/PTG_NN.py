@@ -19,10 +19,9 @@ import time
 
 sys.stdout = open("PTGNN.txt", "w")
 
-
 class NNNConv(MessagePassing):
-    def __init__(self, in_channels, out_channels):
-        super().__init__(aggr='add') #  "Max" aggregation.
+    def __init__(self, in_channels, out_channels, aggr):
+        super().__init__(aggr=aggr) #  "Max" aggregation.
         self.mlp = nn.Sequential(nn.Linear(2 * in_channels, out_channels),
                        nn.ReLU(),
                        nn.Linear(out_channels, out_channels))

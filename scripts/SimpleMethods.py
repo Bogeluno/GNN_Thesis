@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 import time
 
-df_full = pd.read_csv('Data/SimpleNNData.csv', index_col=0, parse_dates = [1])
+df_full = pd.read_csv('Data/SimpleNNData.csv', index_col=0, parse_dates = [1]).sort_values(by = 'time')
 y = df_full.time_to_reservation
 
 # Load weather
@@ -46,9 +46,12 @@ def cv(pipe, parameters, X_train, y_train, cf = 4):
     
     return(cv_select)
 
+with open("Data/Sample_NC", "rb") as fp: 
+    nc = pickle.load(fp)
+
 # For classification
-Clas_Coef = dict(pd.concat([df_full.time.dt.hour.iloc[cc[0]],y[cc[0]]], axis = 1).groupby('time')['time_to_reservation'].mean()*2)
-df_clas = pd.concat([df_full.time.dt.hour.iloc[cc[2]],y[cc[2]]], axis = 1)
+Clas_Coef = dict(pd.concat([df_full.time.dt.hour.iloc[np.concatenate(cc[:2])],df_full.time_to_reservation.iloc[np.concatenate(cc[:2])]], axis = 1).groupby('time')['time_to_reservation'].mean()*2)
+df_clas = pd.concat([df_full.time.dt.hour.iloc[cc[2]],df_full.time_to_reservation.iloc[cc[2]]], axis = 1)
 df_clas['Cut'] = df_clas.time.map(dict(Clas_Coef))
 df_full.drop(columns=['time_to_reservation', 'hour_index', 'time'], inplace=True)
 

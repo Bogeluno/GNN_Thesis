@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from datetime import date, timedelta
 import torch.optim as optim
 import torch.nn as nn
-from torch_geometric.nn import Sequential, GCNConv, Linear
+from torch_geometric.nn import Sequential, MessagePassing, Linear
 from torch_geometric import utils, data
 from torch_geometric.loader import DataLoader
 from sklearn.metrics import r2_score, classification_report
@@ -21,8 +21,24 @@ pd.set_option('mode.chained_assignment',None)
 device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
 no_days = int(sys.argv[1])
 print(device)
-name = "GCN_No_Zones"
+name = "NN_Weather"
 sys.stdout = open("Results/"+name+".txt", "w")
+
+
+class NNNConv(MessagePassing):
+    def __init__(self, in_channels, out_channels, aggr):
+        super().__init__(aggr=aggr) #  "Max" aggregation.
+        self.mlp = nn.Sequential(nn.Linear(2 * in_channels, out_channels),
+                       nn.ReLU(),
+                       nn.Linear(out_channels, out_channels))
+
+    def forward(self, x, edge_index, edge_weight):
+        return self.propagate(edge_index, x=x, edge_weight=edge_weight)
+
+    def message(self, x_i, x_j, edge_weight):
+        tmp = torch.cat([x_i, x_j], dim=1) 
+        return edge_weight.view(-1, 1) * self.mlp(tmp)
+
 
 class EarlyStopping:
     """Early stops the training if validation loss doesn't improve after a given patience."""
@@ -122,7 +138,7 @@ def make_PTG(graph, zones, Weather_Scale):
 
     # drop
     attr.drop(columns=['park_location_lat', 'park_location_long', 'leave_location_lat', 'leave_location_long', 'park_fuel', 'park_zone', 'moved', 'movedTF', 'time', 'prev_customer', 'next_customer', 'action'], inplace = True)
-    attr.drop(columns = ['leave_zone','dist_to_station'] + list(Weather_Scale.index), inplace = True)
+    attr.drop(columns = ['leave_zone'], inplace = True)
     # One hot encoding
     attr['engine']= pd.Categorical(attr['engine'], categories=['118I', 'I3', 'COOPER', 'X1'])
     attr = pd.get_dummies(attr, columns = ['engine'], prefix='eng')
@@ -132,6 +148,8 @@ def make_PTG(graph, zones, Weather_Scale):
 
     # Normalize fuel, weahter and dist 
     attr['leave_fuel'] = attr['leave_fuel']/100
+    attr['dist_to_station'] = attr['dist_to_station']/5000
+    attr[Weather_Scale.index] = (attr[Weather_Scale.index] - Weather_Scale['Min'])/Weather_Scale['diff']
 
     # Get edges
     edge_index, edge_weight = utils.convert.from_scipy_sparse_matrix(adj)
@@ -194,19 +212,19 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,64, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        (NNNConv(17,64, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.25), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,64, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        (NNNConv(17,64, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(9,64),'x -> x'),
+        (Linear(17,64),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
@@ -336,19 +354,19 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,32, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        (NNNConv(17,32, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,32, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        (NNNConv(17,32, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(9,32),'x -> x'),
+        (Linear(17,32),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
@@ -471,28 +489,27 @@ print(f'Time Spent: {time.time()-t}')
 print('\n')
 print('\n')
 
-
 ################################################
 ################ Small
-#################################################
+################################################
 class GCN(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,16, aggr = 'max'),'x, edge_index, edge_weight -> x'),
+        (NNNConv(17,16, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GCNConv(9,16, aggr = 'add'),'x, edge_index, edge_weight -> x'),
+        (NNNConv(17,16, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(9,16),'x -> x'),
+        (Linear(17,16),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
@@ -611,5 +628,8 @@ df_clas['Preds'] = [GNN(b).detach().numpy().item(-1) for b in test_loader]
 print(f'Test score: {r2_score(df_clas.Targets,df_clas.Preds)}')
 print(classification_report(df_clas.Targets > df_clas.Cut, df_clas.Preds > df_clas.Cut, target_names = ['Under','Over'], zero_division = 0))
 print(f'Time Spent: {time.time()-t}')
+
+print('\n')
+print('\n')
 
 sys.stdout.close()
