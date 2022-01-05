@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from datetime import date, timedelta
 import torch.optim as optim
 import torch.nn as nn
-from torch_geometric.nn import Sequential, GATConv, Linear
+from torch_geometric.nn import Sequential, GCNConv, Linear
 from torch_geometric import utils, data
 from torch_geometric.loader import DataLoader
 from sklearn.metrics import r2_score, classification_report
@@ -21,7 +21,7 @@ pd.set_option('mode.chained_assignment',None)
 device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
 no_days = int(sys.argv[1])
 print(device)
-name = "GAT_All"
+name = "GCN_All_A0"
 sys.stdout = open("Results/"+name+".txt", "w")
 
 class EarlyStopping:
@@ -80,7 +80,7 @@ def r2_loss(output, target):
     return -r2
 
 
-batch_size = 256
+batch_size = 512
 
 # Load slicing
 with open("Data/Sample_NC", "rb") as fp: 
@@ -139,7 +139,7 @@ def make_PTG(graph, zones, Weather_Scale):
     attr[Weather_Scale.index] = (attr[Weather_Scale.index] - Weather_Scale['Min'])/Weather_Scale['diff']
 
     # Get edges
-    edge_index, edge_weight = utils.convert.from_scipy_sparse_matrix(adj)
+    edge_index, edge_weight = utils.convert.from_scipy_sparse_matrix(sparse.csr_matrix(adj.shape))
 
     # Make pytorch data type
     d = data.Data(x = torch.tensor(attr.drop(columns = ['time_to_reservation']).to_numpy(dtype = 'float')).float(), edge_index=edge_index, edge_attr=edge_weight.float(), y = torch.tensor(attr.time_to_reservation.values).float())
@@ -199,27 +199,27 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,48, aggr = 'max', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GCNConv(273,64, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.25), 'x -> x')
+        (nn.Dropout(0.5), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,48, aggr = 'add', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GCNConv(273,64, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.2), 'x -> x')
+        (nn.Dropout(0.5), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(273,48),'x -> x'),
+        (Linear(273,64),'x -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.2), 'x -> x')
+        (nn.Dropout(0.5), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(336,64),'x -> x'),
+            (Linear(192,64),'x -> x'),
             nn.ReLU(inplace = True),
-            (nn.Dropout(0.2), 'x -> x'),
+            (nn.Dropout(0.5), 'x -> x'),
             (Linear(64,1),'x -> x')
         ])
 
@@ -241,7 +241,7 @@ GNN = GCN().to(device)
 print(GNN, sum(p.numel() for p in GNN.parameters()))
 print('Start learning')
 
-optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.0001) #Chaged to Adam and learning + regulariztion rate set
 
 
 # Set number of epochs
@@ -341,27 +341,27 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,32, aggr = 'max', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GCNConv(273,32, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.4), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,32, aggr = 'add', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GCNConv(273,32, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.4), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
         (Linear(273,32),'x -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.4), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(224,48),'x -> x'),
+            (Linear(96,48),'x -> x'),
             nn.ReLU(inplace = True),
-            (nn.Dropout(0.2), 'x -> x'),
+            (nn.Dropout(0.4), 'x -> x'),
             (Linear(48,1),'x -> x')
         ])
 
@@ -383,7 +383,7 @@ GNN = GCN().to(device)
 print(GNN, sum(p.numel() for p in GNN.parameters()))
 print('Start learning')
 
-optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.0001) #Chaged to Adam and learning + regulariztion rate set
 
 
 # Set number of epochs
@@ -484,27 +484,27 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,16, aggr = 'max', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GCNConv(273,16, aggr = 'max'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.3), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,16, aggr = 'add', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GCNConv(273,16, aggr = 'add'),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.3), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
         (Linear(273,16),'x -> x'),
         nn.ReLU(inplace = True),
-        (nn.Dropout(0.1), 'x -> x')
+        (nn.Dropout(0.3), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(112,16),'x -> x'),
+            (Linear(48,16),'x -> x'),
             nn.ReLU(inplace = True),
-            (nn.Dropout(0.1), 'x -> x'),
+            (nn.Dropout(0.3), 'x -> x'),
             (Linear(16,1),'x -> x')
         ])
 
@@ -526,7 +526,7 @@ GNN = GCN().to(device)
 print(GNN, sum(p.numel() for p in GNN.parameters()))
 print('Start learning')
 
-optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.00001) #Chaged to Adam and learning + regulariztion rate set
+optimizer = optim.Adam(GNN.parameters(), lr=0.001, weight_decay = 0.0001) #Chaged to Adam and learning + regulariztion rate set
 
 
 # Set number of epochs

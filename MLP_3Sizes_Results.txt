@@ -1,0 +1,300 @@
+----------------------------------------------
+---NO ZONES
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=9, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=32, out_features=1, bias=True)
+  )
+) 353
+Test R2: 0.093862826692928
+F1-score: 0.0
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=9, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=32, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.0, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 865
+Test R2: 0.09715337578302463
+F1-score: 0.0031588447653429605
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=9, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.0, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 9601
+Test R2: 0.09624572233533046
+F1-score: 0.00985883934573157
+Time spent: 15.438486814498901
+
+
+
+----------------------------------------------
+---ADD ZONES
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=265, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=32, out_features=1, bias=True)
+  )
+) 8545
+Test R2: 0.11530202238591125
+F1-score: 0.0
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=265, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=32, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.1, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 9057
+Test R2: 0.16846649064961772
+F1-score: 0.030243261012491782
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=265, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 42369
+Test R2: 0.19829317887707365
+F1-score: 0.15606725146198833
+Time spent: 45.988526582717896
+
+
+
+----------------------------------------------
+---ADD ENCODED ZONES
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=10, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=32, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 897
+Test R2: 0.18438170694550493
+F1-score: 0.1710665258711721
+(
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=10, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 9729
+Test R2: 0.18841110607998934
+F1-score: 0.19188820722563052
+(
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=10, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=128, out_features=128, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=128, out_features=64, bias=True)
+    (7): ReLU()
+    (8): Dropout(p=0.2, inplace=False)
+    (9): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 26241
+Test R2: 0.19702824738774372
+F1-score: 0.20573355817875214
+Time spent: 75.26758480072021
+
+
+
+----------------------------------------------
+---ADD WEATHER AND DIST
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=17, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.1, inplace=False)
+    (3): Linear(in_features=32, out_features=32, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=32, out_features=1, bias=True)
+  )
+) 1665
+Test R2: 0.11271652335217441
+F1-score: 0.03297644539614561
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=17, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 10625
+Test R2: 0.11936352130248395
+F1-score: 0.04546402502606882
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=17, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=128, out_features=128, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=128, out_features=64, bias=True)
+    (7): ReLU()
+    (8): Dropout(p=0.2, inplace=False)
+    (9): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 27137
+Test R2: 0.12277179797876481
+F1-score: 0.052087639520463
+Time spent: 105.01442980766296
+
+
+
+----------------------------------------------
+---WITH ALL AND ENCODED
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=18, out_features=16, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=16, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.0, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 593
+Test R2: 0.13094189368543685
+F1-score: 0.09787735849056603
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=18, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=32, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.0, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 1153
+Test R2: 0.1676164266685356
+F1-score: 0.19137645107794363
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=18, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 10753
+Test R2: 0.19194037818701704
+F1-score: 0.1821353803210049
+Time spent: 122.27556824684143
+
+
+
+----------------------------------------------
+---WITH ALL AND ENCODED
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=18, out_features=16, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=16, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.0, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 593
+Test R2: 0.168759008145273
+F1-score: 0.1711602017742216
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=18, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=32, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.0, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 1153
+Test R2: 0.17544207970223225
+F1-score: 0.18871132267936078
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=18, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.0, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 10753
+Test R2: 0.1967025916095373
+F1-score: 0.18023052741879145
+Time spent: 139.46912169456482
+
+
+
