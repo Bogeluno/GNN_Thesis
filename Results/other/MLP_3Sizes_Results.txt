@@ -9,8 +9,8 @@ Net(
     (3): Linear(in_features=32, out_features=1, bias=True)
   )
 ) 353
-Test R2: 0.093862826692928
-F1-score: 0.0
+Test R2: 0.11106294438694786
+F1-score: 0.03757920034957395
 
 
 Net(
@@ -24,8 +24,8 @@ Net(
     (6): Linear(in_features=16, out_features=1, bias=True)
   )
 ) 865
-Test R2: 0.09715337578302463
-F1-score: 0.0031588447653429605
+Test R2: 0.1147285867058182
+F1-score: 0.078125
 
 
 Net(
@@ -39,9 +39,11 @@ Net(
     (6): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 9601
-Test R2: 0.09624572233533046
-F1-score: 0.00985883934573157
-Time spent: 15.438486814498901
+Test R2: 0.11277250779977932
+F1-score: 0.06050203818922977
+
+
+Time spent: 270.2796251773834
 
 
 
@@ -56,8 +58,8 @@ Net(
     (3): Linear(in_features=32, out_features=1, bias=True)
   )
 ) 8545
-Test R2: 0.11530202238591125
-F1-score: 0.0
+Test R2: 0.23203391684624297
+F1-score: 0.23600000000000002
 
 
 Net(
@@ -71,8 +73,8 @@ Net(
     (6): Linear(in_features=16, out_features=1, bias=True)
   )
 ) 9057
-Test R2: 0.16846649064961772
-F1-score: 0.030243261012491782
+Test R2: 0.23633321897050452
+F1-score: 0.26208651399491095
 
 
 Net(
@@ -86,9 +88,11 @@ Net(
     (6): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 42369
-Test R2: 0.19829317887707365
-F1-score: 0.15606725146198833
-Time spent: 45.988526582717896
+Test R2: 0.23762225433628936
+F1-score: 0.2890801993656547
+
+
+Time spent: 1325.461169242859
 
 
 
@@ -106,8 +110,8 @@ Net(
     (6): Linear(in_features=16, out_features=1, bias=True)
   )
 ) 897
-Test R2: 0.18438170694550493
-F1-score: 0.1710665258711721
+Test R2: 0.20669028106418064
+F1-score: 0.20742506811989106
 (
 
 Net(
@@ -121,8 +125,8 @@ Net(
     (6): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 9729
-Test R2: 0.18841110607998934
-F1-score: 0.19188820722563052
+Test R2: 0.2133567123277278
+F1-score: 0.23031105228325613
 (
 
 Net(
@@ -139,9 +143,11 @@ Net(
     (9): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 26241
-Test R2: 0.19702824738774372
-F1-score: 0.20573355817875214
-Time spent: 75.26758480072021
+Test R2: 0.2204814872473344
+F1-score: 0.25250242169841786
+
+
+Time spent: 2725.16498875618
 
 
 
@@ -159,8 +165,8 @@ Net(
     (6): Linear(in_features=32, out_features=1, bias=True)
   )
 ) 1665
-Test R2: 0.11271652335217441
-F1-score: 0.03297644539614561
+Test R2: 0.14249276649119103
+F1-score: 0.07849617847552158
 
 
 Net(
@@ -174,8 +180,8 @@ Net(
     (6): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 10625
-Test R2: 0.11936352130248395
-F1-score: 0.04546402502606882
+Test R2: 0.14501048511791992
+F1-score: 0.08838643371017472
 
 
 Net(
@@ -192,9 +198,63 @@ Net(
     (9): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 27137
-Test R2: 0.12277179797876481
-F1-score: 0.052087639520463
-Time spent: 105.01442980766296
+Test R2: 0.13991516053537212
+F1-score: 0.10572687224669604
+
+
+Time spent: 799.5936634540558
+
+
+
+----------------------------------------------
+---WITH ALL
+----------------------------------------------
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=273, out_features=16, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.1, inplace=False)
+    (3): Linear(in_features=16, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.1, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 4673
+Test R2: 0.23652959715286115
+F1-score: 0.2618626347112755
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=273, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.1, inplace=False)
+    (3): Linear(in_features=32, out_features=16, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.1, inplace=False)
+    (6): Linear(in_features=16, out_features=1, bias=True)
+  )
+) 9313
+Test R2: 0.23714839415075584
+F1-score: 0.2761389961389961
+
+
+Net(
+  (seq): Sequential(
+    (0): Linear(in_features=273, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.1, inplace=False)
+    (3): Linear(in_features=128, out_features=64, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.1, inplace=False)
+    (6): Linear(in_features=64, out_features=1, bias=True)
+  )
+) 43393
+Test R2: 0.2382959397433425
+F1-score: 0.29591836734693877
+
+
+Time spent: 1580.0158824920654
 
 
 
@@ -212,8 +272,8 @@ Net(
     (6): Linear(in_features=16, out_features=1, bias=True)
   )
 ) 593
-Test R2: 0.13094189368543685
-F1-score: 0.09787735849056603
+Test R2: 0.20894502418362326
+F1-score: 0.21695594125500667
 
 
 Net(
@@ -227,8 +287,8 @@ Net(
     (6): Linear(in_features=16, out_features=1, bias=True)
   )
 ) 1153
-Test R2: 0.1676164266685356
-F1-score: 0.19137645107794363
+Test R2: 0.21222691960074214
+F1-score: 0.22277722277722276
 
 
 Net(
@@ -242,59 +302,9 @@ Net(
     (6): Linear(in_features=64, out_features=1, bias=True)
   )
 ) 10753
-Test R2: 0.19194037818701704
-F1-score: 0.1821353803210049
-Time spent: 122.27556824684143
+Test R2: 0.22100668459790918
+F1-score: 0.24433946896888745
 
 
-
-----------------------------------------------
----WITH ALL AND ENCODED
-----------------------------------------------
-Net(
-  (seq): Sequential(
-    (0): Linear(in_features=18, out_features=16, bias=True)
-    (1): ReLU()
-    (2): Dropout(p=0.0, inplace=False)
-    (3): Linear(in_features=16, out_features=16, bias=True)
-    (4): ReLU()
-    (5): Dropout(p=0.0, inplace=False)
-    (6): Linear(in_features=16, out_features=1, bias=True)
-  )
-) 593
-Test R2: 0.168759008145273
-F1-score: 0.1711602017742216
-
-
-Net(
-  (seq): Sequential(
-    (0): Linear(in_features=18, out_features=32, bias=True)
-    (1): ReLU()
-    (2): Dropout(p=0.0, inplace=False)
-    (3): Linear(in_features=32, out_features=16, bias=True)
-    (4): ReLU()
-    (5): Dropout(p=0.0, inplace=False)
-    (6): Linear(in_features=16, out_features=1, bias=True)
-  )
-) 1153
-Test R2: 0.17544207970223225
-F1-score: 0.18871132267936078
-
-
-Net(
-  (seq): Sequential(
-    (0): Linear(in_features=18, out_features=128, bias=True)
-    (1): ReLU()
-    (2): Dropout(p=0.0, inplace=False)
-    (3): Linear(in_features=128, out_features=64, bias=True)
-    (4): ReLU()
-    (5): Dropout(p=0.2, inplace=False)
-    (6): Linear(in_features=64, out_features=1, bias=True)
-  )
-) 10753
-Test R2: 0.1967025916095373
-F1-score: 0.18023052741879145
-Time spent: 139.46912169456482
-
-
+Time spent: 3027.426382303238
 

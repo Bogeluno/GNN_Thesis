@@ -18,7 +18,7 @@ import subprocess
 import time
 t = time.time()
 pd.set_option('mode.chained_assignment',None)
-device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 no_days = int(sys.argv[1])
 print(device)
 name = "GAT_Zones"

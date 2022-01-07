@@ -87,13 +87,13 @@ df_clas['Cut'] = df_clas.time.map(dict(Clas_Coef))
 
 # Common setting
 batch_size = 512
-num_epochs = 5#501
+num_epochs = 1500
 
 # Set up print
 time_start = time.time()
 sys.stdout = open("Results/MLP_3Sizes_Results.txt", "w")
 
-
+'''
 ##################################
 ### NO ZONES
 ##################################
@@ -180,33 +180,35 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
+    
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -300,33 +302,35 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+    
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -419,33 +423,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -558,33 +563,35 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
+    
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -678,33 +685,35 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
+    
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -798,33 +807,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -946,33 +956,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1067,33 +1078,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1191,33 +1203,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1242,7 +1255,7 @@ print('\n')
 
 print(f'Time spent: {time.time()-time_start}')
 print('\n\n')
-
+'''
 
 ##################################
 ### ADD WEATHER AND DIST
@@ -1334,33 +1347,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1453,33 +1467,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1575,33 +1590,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1701,7 +1717,7 @@ get_slice = lambda i, size: range(i * size, (i + 1) * size)
 path = 'Checkpoints/Full.pt'
 early_stopping = EarlyStopping(patience=20, verbose=False, path = path)
 
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs)):
     # Forward -> Backprob -> Update params
     ## Train
     cur_loss_train = 0
@@ -1720,33 +1736,34 @@ for epoch in range(num_epochs):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1822,7 +1839,7 @@ get_slice = lambda i, size: range(i * size, (i + 1) * size)
 path = 'Checkpoints/Full.pt'
 early_stopping = EarlyStopping(patience=20, verbose=False, path = path)
 
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs)):
     # Forward -> Backprob -> Update params
     ## Train
     cur_loss_train = 0
@@ -1841,33 +1858,34 @@ for epoch in range(num_epochs):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -1943,7 +1961,7 @@ get_slice = lambda i, size: range(i * size, (i + 1) * size)
 path = 'Checkpoints/Full.pt'
 early_stopping = EarlyStopping(patience=20, verbose=False, path = path)
 
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs)):
     # Forward -> Backprob -> Update params
     ## Train
     cur_loss_train = 0
@@ -1962,33 +1980,34 @@ for epoch in range(num_epochs):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -2108,33 +2127,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -2229,33 +2249,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)
@@ -2349,33 +2370,34 @@ for epoch in tqdm(range(num_epochs)):
         cur_loss_train += batch_loss
     train_losses.append(cur_loss_train/num_batches_train)
 
-    net.eval()
     ### Evaluate training
-    train_preds, train_targs = [], []
-    for i in range(num_batches_train):
-        slce = get_slice(i, batch_size)
-        output = net(X_train[slce])
-        
-        preds = output
-        
-        train_targs += list(y_train[slce].numpy())
-        train_preds += list(preds.data.numpy())
+    with torch.no_grad():
+        net.eval()
+        train_preds, train_targs = [], []
+        for i in range(num_batches_train):
+            slce = get_slice(i, batch_size)
+            output = net(X_train[slce])
+            
+            preds = output
+            
+            train_targs += list(y_train[slce].numpy())
+            train_preds += list(preds.data.numpy())
 
 
-    ### Evaluate validation
-    val_preds, val_targs = [], []
-    cur_loss_val = 0
-    for i in range(num_batches_valid):
-        slce = get_slice(i, batch_size)
-        
-        output = net(X_val[slce])
-        preds = output
-        val_targs += list(y_val[slce].numpy())
-        val_preds += list(preds.data.numpy())
+        ### Evaluate validation
+        val_preds, val_targs = [], []
+        cur_loss_val = 0
+        for i in range(num_batches_valid):
+            slce = get_slice(i, batch_size)
+            
+            output = net(X_val[slce])
+            preds = output
+            val_targs += list(y_val[slce].numpy())
+            val_preds += list(preds.data.numpy())
 
-        cur_loss_val += r2_loss(output, y_val[slce])
+            cur_loss_val += r2_loss(output, y_val[slce])
 
-    val_losses.append(cur_loss_val/num_batches_valid)
+        val_losses.append(cur_loss_val/num_batches_valid)
 
     train_r2_cur = r2_score(train_targs, train_preds)
     valid_r2_cur = r2_score(val_targs, val_preds)

@@ -2,11 +2,8 @@ import sys
 import pandas as pd
 import numpy as np
 import pickle
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score, classification_report
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression, ElasticNet
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor

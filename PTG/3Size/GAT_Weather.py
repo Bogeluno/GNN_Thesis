@@ -18,10 +18,10 @@ import subprocess
 import time
 t = time.time()
 pd.set_option('mode.chained_assignment',None)
-device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 no_days = int(sys.argv[1])
 print(device)
-name = "GAT_All"
+name = "GAT_Weather"
 sys.stdout = open("Results/"+name+".txt", "w")
 
 class EarlyStopping:
@@ -80,7 +80,7 @@ def r2_loss(output, target):
     return -r2
 
 
-batch_size = 256
+batch_size = 512
 
 # Load slicing
 with open("Data/Sample_NC", "rb") as fp: 
@@ -122,11 +122,8 @@ def make_PTG(graph, zones, Weather_Scale):
 
     # drop
     attr.drop(columns=['park_location_lat', 'park_location_long', 'leave_location_lat', 'leave_location_long', 'park_fuel', 'park_zone', 'moved', 'movedTF', 'time', 'prev_customer', 'next_customer', 'action'], inplace = True)
-
+    attr.drop(columns = ['leave_zone'], inplace = True)
     # One hot encoding
-    attr['leave_zone'] = pd.Categorical(attr['leave_zone'], categories=zones)
-    attr = pd.get_dummies(attr, columns = ['leave_zone'], prefix='lz')
-    
     attr['engine']= pd.Categorical(attr['engine'], categories=['118I', 'I3', 'COOPER', 'X1'])
     attr = pd.get_dummies(attr, columns = ['engine'], prefix='eng')
 
@@ -199,25 +196,25 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,48, aggr = 'max', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GATConv(17,64, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.25), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,48, aggr = 'add', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GATConv(17,64, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(273,48),'x -> x'),
+        (Linear(17,64),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(336,64),'x -> x'),
+            (Linear(192,64),'x -> x'),
             nn.ReLU(inplace = True),
             (nn.Dropout(0.2), 'x -> x'),
             (Linear(64,1),'x -> x')
@@ -341,25 +338,25 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,32, aggr = 'max', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GATConv(17,32, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,32, aggr = 'add', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GATConv(17,32, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(273,32),'x -> x'),
+        (Linear(17,32),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(224,48),'x -> x'),
+            (Linear(96,48),'x -> x'),
             nn.ReLU(inplace = True),
             (nn.Dropout(0.2), 'x -> x'),
             (Linear(48,1),'x -> x')
@@ -484,25 +481,25 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,16, aggr = 'max', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GATConv(17,16, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(273,16, aggr = 'add', edge_dim = 1, heads = 3),'x, edge_index, edge_weight -> x'),
+        (GATConv(17,16, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(273,16),'x -> x'),
+        (Linear(17,16),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(112,16),'x -> x'),
+            (Linear(48,16),'x -> x'),
             nn.ReLU(inplace = True),
             (nn.Dropout(0.1), 'x -> x'),
             (Linear(16,1),'x -> x')

@@ -18,10 +18,10 @@ import subprocess
 import time
 t = time.time()
 pd.set_option('mode.chained_assignment',None)
-device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 no_days = int(sys.argv[1])
 print(device)
-name = "GAT_All_Encoded"
+name = "GAT_Encoded_Zones"
 sys.stdout = open("Results/"+name+".txt", "w")
 
 class EarlyStopping:
@@ -124,6 +124,7 @@ def make_PTG(graph, zones, Weather_Scale, Mean_Zone_Times = Mean_Zone_Times):
 
     # drop
     attr.drop(columns=['park_location_lat', 'park_location_long', 'leave_location_lat', 'leave_location_long', 'park_fuel', 'park_zone', 'moved', 'movedTF', 'time', 'prev_customer', 'next_customer', 'action'], inplace = True)
+    attr.drop(columns = ['dist_to_station'] + list(Weather_Scale.index), inplace = True)
     # One hot encoding
     attr['leave_zone'] = pd.Categorical(attr['leave_zone'], categories=zones)
     attr = pd.get_dummies(attr, columns = ['leave_zone'], prefix='lz')
@@ -136,8 +137,6 @@ def make_PTG(graph, zones, Weather_Scale, Mean_Zone_Times = Mean_Zone_Times):
 
     # Normalize fuel, weahter and dist 
     attr['leave_fuel'] = attr['leave_fuel']/100
-    attr['dist_to_station'] = attr['dist_to_station']/5000
-    attr[Weather_Scale.index] = (attr[Weather_Scale.index] - Weather_Scale['Min'])/Weather_Scale['diff']
 
     # Zone
     attr['Zone_E'] = attr.filter(regex = 'lz').idxmax(1).map(Mean_Zone_Times)
@@ -204,19 +203,19 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(18,64, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(10,64, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.25), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(18,64, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(10,64, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(18,64),'x -> x'),
+        (Linear(10,64),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.2), 'x -> x')
         ])
@@ -346,19 +345,19 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(18,32, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(10,32, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(18,32, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(10,32, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(18,32),'x -> x'),
+        (Linear(10,32),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
@@ -489,19 +488,19 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(18,16, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(10,16, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(18,16, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(10,16, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(18,16),'x -> x'),
+        (Linear(10,16),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])

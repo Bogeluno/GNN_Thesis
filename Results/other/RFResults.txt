@@ -209,3 +209,101 @@ Time spent: 57531.26773071289
 ----------------------------------------------
 ---WITH ALL
 ----------------------------------------------
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 5
+
+R2 of training: 0.6052359773838282
+R2 of test: 0.22036315728277556
+F1-score: 0.304635761589404
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 400 min_samples_leaf = 5
+
+R2 of training: 0.6048049851660697
+R2 of test: 0.21991511379710094
+F1-score: 0.2999210734017364
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 400 min_samples_leaf = 5
+
+R2 of training: 0.6051301927957456
+R2 of test: 0.2203284312486926
+F1-score: 0.2998581113037995
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 5
+
+R2 of training: 0.6052832681538769
+R2 of test: 0.22068801880505062
+F1-score: 0.30048872773135743
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 300 min_samples_leaf = 5
+
+R2 of training: 0.604761034451577
+R2 of test: 0.21956598191007648
+F1-score: 0.3029065200314218
+----------------------------------------------
+
+
+Time spent: 82609.28247141838
+
+
+
+----------------------------------------------
+---WITH ALL AND ENCODED
+----------------------------------------------
+RandomForestRegressor()
+n_estimators = 400 min_samples_leaf = 10
+
+R2 of training: 0.5121522740003603
+R2 of test: 0.24854253134986548
+F1-score: 0.31157315395199514
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 10
+
+R2 of training: 0.5120512815951855
+R2 of test: 0.24833093928332461
+F1-score: 0.3121936274509804
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 10
+
+R2 of training: 0.5124705216576633
+R2 of test: 0.24850430483250008
+F1-score: 0.3140672782874618
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 10
+
+R2 of training: 0.5122785485204826
+R2 of test: 0.24896652352617799
+F1-score: 0.31061418287639764
+----------------------------------------------
+
+
+RandomForestRegressor()
+n_estimators = 500 min_samples_leaf = 10
+
+R2 of training: 0.51224275094702
+R2 of test: 0.2489534888429621
+F1-score: 0.3103289977046672
+----------------------------------------------
+
+
+Time spent: 87909.99909925461
