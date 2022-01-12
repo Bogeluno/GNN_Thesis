@@ -482,25 +482,25 @@ class GCN(torch.nn.Module):
         super().__init__()
 
         self.convM = Sequential('x, edge_index, edge_weight', [
-        (GATConv(265,12, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(265,16, aggr = 'max', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.convA = Sequential('x, edge_index, edge_weight', [
-        (GATConv(265,12, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
+        (GATConv(265,16, aggr = 'add', edge_dim = 1),'x, edge_index, edge_weight -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.linS = Sequential('x', [
-        (Linear(265,12),'x -> x'),
+        (Linear(265,16),'x -> x'),
         nn.ReLU(inplace = True),
         (nn.Dropout(0.1), 'x -> x')
         ])
 
         self.seq = Sequential('x', [
-            (Linear(36,16),'x -> x'),
+            (Linear(48,16),'x -> x'),
             nn.ReLU(inplace = True),
             (nn.Dropout(0.1), 'x -> x'),
             (Linear(16,1),'x -> x')

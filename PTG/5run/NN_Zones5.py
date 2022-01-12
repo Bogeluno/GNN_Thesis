@@ -96,7 +96,7 @@ def r2_loss(output, target):
     return -r2
 
 
-batch_size = 196
+batch_size = 128
 
 # Load slicing
 with open("Data/Sample_NC", "rb") as fp: 
@@ -202,7 +202,8 @@ train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, drop_
 val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=True, drop_last=True, num_workers = 4)
 test_loader = DataLoader(test_data, batch_size=1, shuffle=False, drop_last=False, num_workers = 4)
 del train_data, val_data, test_data
-
+print(subprocess.run(['free', '-m'], stdout=subprocess.PIPE).stdout.decode('utf-8'))
+print(f'Time spent: {time.time()-t}')
 
 class GCN(torch.nn.Module):
     def __init__(self):

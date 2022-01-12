@@ -1,0 +1,210 @@
+----------------------------------------------
+---NO ZONE AND LOCAL INFO ONLY
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.09021209734568458
+R2 of test: 0.09274190419741979
+MSE of training: 20.199822316324568
+MSE of test: 19.154367378575447
+----------------------------------------------
+
+Fitting 5 folds for each of 60 candidates, totalling 300 fits
+alpha = 0.001, l1-ratio: 0.001
+
+ElasticNet()
+R2 of training: 0.09021122796982228
+R2 of test: 0.09273632156081946
+MSE of training: 20.19984161888717
+MSE of test: 19.15448524125739
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 30
+
+RandomForestRegressor()
+R2 of training: 0.1911638718908203
+R2 of test: 0.10959884854545743
+MSE of training: 17.95841209051261
+MSE of test: 18.798477355200255
+----------------------------------------------
+
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+n_neighbors = 200 weights = uniform
+
+KNeighborsRegressor()
+R2 of training: 0.11815789783736441
+R2 of test: 0.11157669279587945
+MSE of training: 19.57934780487805
+MSE of test: 18.7567203782546
+----------------------------------------------
+
+Time spent: 328.14975357055664
+
+
+
+----------------------------------------------
+--ADD NON-LOCAL INFO
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.11427743885334984
+R2 of test: 0.11687729262736946
+MSE of training: 19.665504789109423
+MSE of test: 18.644812160550178
+----------------------------------------------
+
+Fitting 5 folds for each of 40 candidates, totalling 200 fits
+alpha = 0.001, l1-ratio: 0.2
+
+ElasticNet()
+R2 of training: 0.11427627307720145
+R2 of test: 0.11687352243712468
+MSE of training: 19.66553067258291
+MSE of test: 18.644891758196504
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 30
+
+RandomForestRegressor()
+R2 of training: 0.2674955002006598
+R2 of test: 0.16801571779342905
+MSE of training: 16.26363760024293
+MSE of test: 17.565158876303663
+----------------------------------------------
+
+Fitting 5 folds for each of 6 candidates, totalling 30 fits
+n_neighbors = 100 weights = distance
+
+KNeighborsRegressor()
+R2 of training: 1.0
+R2 of test: 0.14718310250702793
+MSE of training: 0.0
+MSE of test: 18.004984730157588
+----------------------------------------------
+
+Time spent: 846.8458771705627
+
+
+
+----------------------------------------------
+--ADD WEATHER
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.11582786470992024
+R2 of test: 0.1178454417275765
+MSE of training: 19.63108102206879
+MSE of test: 18.624372239839193
+----------------------------------------------
+
+Fitting 5 folds for each of 60 candidates, totalling 300 fits
+alpha = 0.001, l1-ratio: 1
+
+ElasticNet()
+R2 of training: 0.1158249818241901
+R2 of test: 0.117837362398447
+MSE of training: 19.631145030151703
+MSE of test: 18.624542813614216
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 20
+
+RandomForestRegressor()
+R2 of training: 0.33318222905353223
+R2 of test: 0.17669498620354174
+MSE of training: 14.805209490243351
+MSE of test: 17.381918962023814
+----------------------------------------------
+
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+n_neighbors = 100 weights = distance
+
+KNeighborsRegressor()
+R2 of training: 0.9999999999973919
+R2 of test: 0.13872385789402875
+MSE of training: 5.790846342908891e-11
+MSE of test: 18.183579420921173
+----------------------------------------------
+
+Time spent: 3132.5538046360016
+
+
+
+----------------------------------------------
+--ADD ZONES
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression()
+R2 of training: 0.20141222908448375
+R2 of test: 0.19559637549564668
+MSE of training: 17.730870051601933
+MSE of test: 16.982865863306436
+----------------------------------------------
+
+Fitting 5 folds for each of 40 candidates, totalling 200 fits
+alpha = 0.001, l1-ratio: 1
+
+ElasticNet()
+R2 of training: 0.19602169861974217
+R2 of test: 0.19221167947155504
+MSE of training: 17.850554823471107
+MSE of test: 17.054324813532613
+----------------------------------------------
+
+Time spent: 3234.8451824188232
+
+
+
+----------------------------------------------
+--ENCODE ZONES
+----------------------------------------------
+Fitting 5 folds for each of 1 candidates, totalling 5 fits
+
+LinearRegression(fit_intercept=False)
+R2 of training: 0.1940413311467699
+R2 of test: 0.1902019020939646
+MSE of training: 17.89452449042135
+MSE of test: 17.096755974431172
+----------------------------------------------
+
+Fitting 5 folds for each of 30 candidates, totalling 150 fits
+alpha = 0.001, l1-ratio: 0.1
+
+ElasticNet()
+R2 of training: 0.1940399907420023
+R2 of test: 0.19020800631208024
+MSE of training: 17.894554251135972
+MSE of test: 17.096627099928
+----------------------------------------------
+
+Fitting 5 folds for each of 12 candidates, totalling 60 fits
+n_estimators = 400 min_samples_leaf = 10
+
+RandomForestRegressor()
+R2 of training: 0.5112343462446441
+R2 of test: 0.2537116369193819
+MSE of training: 10.851957177465085
+MSE of test: 15.755915039982613
+----------------------------------------------
+
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+n_neighbors = 50 weights = distance
+
+KNeighborsRegressor()
+R2 of training: 0.999999999999433
+R2 of test: 0.20639345203070614
+MSE of training: 1.2589561355793939e-11
+MSE of test: 16.75491400316439
+----------------------------------------------
+
+Time spent: 5592.120020866394
+
+
+

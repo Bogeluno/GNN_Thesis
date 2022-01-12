@@ -69,16 +69,16 @@ def r2_loss(output, target):
 
 
 # Load full Data
-df_full = pd.read_csv('data/processed/SimpleNNData.csv', index_col=0, parse_dates = [1]).sort_values(by = 'time')
+df_full = pd.read_csv('Data/SimpleNNData.csv', index_col=0, parse_dates = [1]).sort_values(by = 'time')
 y = df_full.time_to_reservation
 df_full.drop(columns=['time_to_reservation', 'hour_index'], inplace=True)
 
 # Load weather
-Weather_Scale = pd.read_csv('data/processed/MinMaxWeather.csv', index_col=0)
+Weather_Scale = pd.read_csv('Data/processed/MinMaxWeather.csv', index_col=0)
 weather_var = list(Weather_Scale.index)
 
 # Load slicing
-with open("data/processed/Sample_CC", "rb") as fp: 
+with open("Data/processed/Sample_CC", "rb") as fp: 
     cc = pickle.load(fp)
 
 # For classification
@@ -92,7 +92,7 @@ num_epochs = 1501
 
 # Set up print
 time_start = time.time()
-sys.stdout = open("MLP5Results.txt", "w")
+sys.stdout = open("Results/MLP5Results.txt", "w")
 
 
 ##################################
@@ -422,6 +422,9 @@ class Net(nn.Module):
         self.seq = nn.Sequential(
             nn.Linear(10,128),
             nn.ReLU(),
+            nn.Dropout(0.0),
+            nn.Linear(128,128),
+            nn.ReLU(),
             nn.Dropout(0.2),
             nn.Linear(128,64),
             nn.ReLU(),
@@ -566,9 +569,6 @@ class Net(nn.Module):
 
         self.seq = nn.Sequential(
             nn.Linear(17,128),
-            nn.ReLU(),
-            nn.Dropout(0.0),
-            nn.Linear(128,128),
             nn.ReLU(),
             nn.Dropout(0.2),
             nn.Linear(128,64),
@@ -863,13 +863,13 @@ class Net(nn.Module):
                 m.bias.data.fill_(0.01)
 
         self.seq = nn.Sequential(
-            nn.Linear(18,32),
+            nn.Linear(18,128),
             nn.ReLU(),
             nn.Dropout(0.0),
-            nn.Linear(32,16),
+            nn.Linear(128,64),
             nn.ReLU(),
-            nn.Dropout(0.0),
-            nn.Linear(16,1),
+            nn.Dropout(0.2),
+            nn.Linear(64,1),
         )
 
         self.seq.apply(init_weights)

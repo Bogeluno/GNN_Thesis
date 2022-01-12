@@ -1,0 +1,47 @@
+              total        used        free      shared  buff/cache   available
+Mem:         128678       72657       26863         176       29158       54719
+Swap:          2047         915        1132
+
+Time spent: 1082.9780097007751
+GCN(
+  (convM): Sequential(
+    (0): NNNConv(
+    (mlp): Sequential(
+      (0): Linear(in_features=546, out_features=64, bias=True)
+      (1): ReLU()
+      (2): Linear(in_features=64, out_features=64, bias=True)
+    )
+  )
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (convA): Sequential(
+    (0): NNNConv(
+    (mlp): Sequential(
+      (0): Linear(in_features=546, out_features=64, bias=True)
+      (1): ReLU()
+      (2): Linear(in_features=64, out_features=64, bias=True)
+    )
+  )
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (linS): Sequential(
+    (0): Linear(273, 64, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+  )
+  (seq): Sequential(
+    (0): Linear(192, 64, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(64, 1, bias=True)
+  )
+) 108289
+Start learning
+Epoch  1: Train Loss -0.148069, Valid Loss -0.214292, Train R2 0.233135, Valid R2 0.216994
+Epoch  2: Train Loss -0.223477, Valid Loss -0.233489, Train R2 0.253599, Valid R2 0.232629
+Epoch  3: Train Loss -0.240234, Valid Loss -0.239425, Train R2 0.270750, Valid R2 0.241307
+Epoch  4: Train Loss -0.251350, Valid Loss -0.243454, Train R2 0.282347, Valid R2 0.244265
+Epoch  5: Train Loss -0.260873, Valid Loss -0.234730, Train R2 0.286690, Valid R2 0.237254
+Epoch  6: Train Loss -0.271987, Valid Loss -0.241036, Train R2 0.305718, Valid R2 0.246752

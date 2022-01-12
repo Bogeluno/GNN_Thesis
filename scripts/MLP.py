@@ -93,7 +93,7 @@ num_epochs = 1500
 time_start = time.time()
 sys.stdout = open("Results/MLP_3Sizes_Results.txt", "w")
 
-'''
+
 ##################################
 ### NO ZONES
 ##################################
@@ -1255,7 +1255,7 @@ print('\n')
 
 print(f'Time spent: {time.time()-time_start}')
 print('\n\n')
-'''
+
 
 ##################################
 ### ADD WEATHER AND DIST
