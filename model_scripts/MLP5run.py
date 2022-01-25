@@ -94,7 +94,7 @@ num_epochs = 10000
 time_start = time.time()
 sys.stdout = open("Results/MLP5Results_Batch10381.txt", "w")
 
-
+'''
 ##################################
 ### NO ZONES
 ##################################
@@ -387,7 +387,7 @@ for _ in tqdm(range(loops)):
 
 print(f'Time spent: {time.time()-time_start}')
 print('\n\n')
-
+'''
 
 ##################################
 ### ADD ENCODED ZONES
